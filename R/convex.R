@@ -28,12 +28,12 @@
 	## Coerce the input to be matrix
 
 	if(is.null(point)){
-		stop(paste("point in n-dimension is needed", "\n"))
+		stop(paste("dataframe or matrix in n-dimension is needed", "\n"))
 	}
 	
 	
-	if(!is.data.frame(point)&& !is.matrix(point)){
-	  stop(paste("Point must be a dataframeor matrix", "\n"))
+	if(!is.data.frame(point) || !is.matrix(point)){
+	  stop(paste("Point must be a dataframe or matrix", "\n"))
 	}
 	if (is.data.frame(point)) {
 	  point <- as.matrix(point)
@@ -67,9 +67,12 @@
 	
 
 	class(ret) <- "convexthull"
-	
-
+	ret$convexhull[is.na(ret$convexhulhull)] = 0
+	ret$convexhull = ret$convexhull + 1
+	nodes = unique(c(as.integer(ret$convexhull)))
+	ret$convexPoints = point[nodes,]
 	ret$inputPoints =point
 	
 	return(ret)
-}
+  }
+  

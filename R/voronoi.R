@@ -2,7 +2,7 @@
 ##' @description  Get Voronoi vertices(circumcenters of Delaunay triangle) and Delaunay triangulation in N-dimensions using the qhull library. The Voronoi diagram is the nearest-neighbor map 
 ##' for a set of points. Each region contains those points that are nearer one input site than any other input site. They can also be describe as the circumcenters of Delaunay triangle.
 ##' The Delaunay triangulation is a tessellation of the convex hull ofthe points such that no N-sphere defined by the N-triangles contains any other points from the set. 
-##' @param point \code{point} is an \code{n}-by-\code{dim} dataframe. The rows of \code{point} represent \code{n} points in \code{dim}-dimensional space.
+##' @param point \code{point} is an \code{n}-by-\code{dim} dataframe or matrix. The rows of \code{point} represent \code{n} points in \code{dim}-dimensional space.
 ##' @param options String containing extra options for the underlying Qhull command.(See the Qhull documentation (\url{../doc/html/qvoronoi.html}) for the available options.) The
 ##'   \code{Qbb} option is always passed to Qhull. The default options are \code{Qcc Qc Qt Qz} for \code{dim} <4 and \code{Qcc Qc Qt
 ##'   Qx} for \code{dim}>=4.  If neither of the \code{QJ} or \code{Qt} options are supplied, the \code{Qt} option is passed to Qhull.
@@ -25,10 +25,11 @@ voronoi <- function(point=NULL, options=NULL, full=TRUE) {
 	}
 
 	
-	if (!is.data.frame(point)) {
-	  stop(paste("Point must be a dataframe", "\n"))
-	}else{
-	  point <- as.matrix(point)
+	if(!is.data.frame(point) || !is.matrix(point)){
+	  stop("point must be a dataframe or matrix ");
+	}
+	if(!is.matrix(point)){
+	  points=as.matrix(point)
 	}
 	## Make sure we have real-valued input
 	storage.mode(point) <- "double"
@@ -68,12 +69,15 @@ voronoi <- function(point=NULL, options=NULL, full=TRUE) {
 		ret$tri <- NULL
 		
 	} 
-	
-	ret$inputPoints =point
+	ret$tri[is.na(ret$tri)] = 0
+	ret$tri = ret$tri + 1
 	
 	if (!full) {
 		return(ret$voronoiVertices)
 	}
+	
+	ret$inputPoints =point
+	
 	class(ret) <- "Voronoi DIagram"
 	return(ret)
 }

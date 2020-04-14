@@ -2,7 +2,7 @@
 ##' @title Find Simplex
 ##' @description Returns the simplicies of the delaunay trigulation which contains a given point.
 ##' @param tri delaunay trigulation simplex using \code{\link{delaunay}}
-##' @param testPoint  \code{n}-by-\code{dim} dataframe of points to check.  
+##' @param testPoint  \code{n}-by-\code{dim} dataframe of points or matrix to check.  
 ##' @param inputPoint  \code{n}-by-\code{dim} dataframe or matrix of original inputPoint. 
 ##' @details Given a grid point and a test point point, the find Simplex will identify the simplicies contianing the test point. 
 ##' It works by first checking for all point inside a convex hull, and then check if the center of the grid cell is inside the trigulation
@@ -29,8 +29,16 @@ findSimplex <- function(tri,inputPoint,testPoint) {
   inHull = inconvexhull(hull, testPoint)
   
   tri=as.matrix(tri)
-  testPoint= as.matrix(testPoint)
-  inputPoint= as.matrix(inputPoint)
+  
+  if(!is.matrix(testPoint))
+  {
+    testPoint= as.matrix(testPoint)
+  }
+  if(!is.matrix(inputPoint))
+  {
+    inputPoint= as.matrix(inputPoint)
+  }
+  
   
   #grid points outisde convex hull
   gridOutside=which(inHull==FALSE)

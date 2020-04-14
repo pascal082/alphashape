@@ -4,7 +4,7 @@
 ##' lies outwith the hull 
 ##' 
 ##' @param  hull object Convex hull simplices produced using convex function
-##' @param points: dataframe  \code{n}-by-\code{dim} of points to check. 
+##' @param points: dataframe or matrix  \code{n}-by-\code{dim} of points to check. 
 ##' @return A \code{n*m} vector containing the result. True if a given point was inside the convexhull , otherwise false
 ##' @examples 
 ##' x = c(30,70,20,50,40,70)
@@ -17,9 +17,10 @@
 #' @export inconvexhull
 inconvexhull <- function(hull, points) {
 	
-	if(!is.data.frame(points)){
-		stop("Test input point is not a dataframe ");
-	}else{
+	if(!is.data.frame(points) || !is.matrix(points)){
+		stop("Test input point is not a dataframe or matrix ");
+	}
+  if(!is.matrix(points)){
 	  points=as.matrix(points)
 	}
 	

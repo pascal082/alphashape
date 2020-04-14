@@ -18,7 +18,7 @@ NULL
 
 ##' @title getAlphaShape
 ##' @description Compute an alpha Shape Grid using the Q-hull library. 
-##' @param point observation as dataframe
+##' @param point observation as dataframe or matrix
 ##' @param alphaRange, range of alpha value
 ##' @param mins Vector of length \code{n} listing the point space minimum for each dimension.
 #'  @param maxs Vector of length \code{n} listing the point space maximum for each  dimension.
@@ -52,8 +52,8 @@ getAlphaShape <- function(point,alphaRange,maxs,mins,n) {
   }
   
   #check point
-  if (!is.data.frame(point)){
-    error=append(error,paste0("Point must be a dataframe", "\n"))
+  if (!is.data.frame(point) || !is.matrix(point) ){
+    error=append(error,paste0("Point must be a dataframe or matrix", "\n"))
   }
   
   #check min/mx
@@ -106,7 +106,10 @@ getAlphaShape <- function(point,alphaRange,maxs,mins,n) {
     
     #get voronoi object
     voronoiObject = voronoi(point=point)
-    point <- as.matrix(point)
+    
+    if(!is.matrix(point)){
+      point <- as.matrix(point)
+    }
     
     
     if(is.vector(alphaRange))

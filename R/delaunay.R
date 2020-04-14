@@ -1,7 +1,7 @@
 ##' @title Delaunay triangulation in N-dimensions. 
 ##' @description  The Delaunay triangulation is a tessellation of the convex hull of the points such that no N-sphere defined by the N-triangles
 ##' contains any other points from the set. This function calculates the Delaunay triangulation  in N-dimensions using the qhull library
-##' @param point \code{point} is an \code{n}-by-\code{dim} dataframe. The rows of
+##' @param point \code{point} is an \code{n}-by-\code{dim} dataframevor matrix. The rows of
 ##'   \code{point} represent \code{n} points in \code{dim}-dimensional
 ##'   space.
 ##' @param options String containing extra options for the underlying Qhull command.(See the Qhull documentation (\url{../doc/html/qdelaun.html}) for the available options.) The
@@ -26,9 +26,11 @@
 	}
 	
 	
-	if (!is.data.frame(point)) {
-	  stop(paste("Point must be a dataframe", "\n"))
-	}else{
+	if (!is.data.frame(point)|| !is.matrix(point)) {
+	  stop(paste("Point must be a dataframe or matrix", "\n"))
+	}
+	
+	if (is.data.frame(point)) {
 	  point <- as.matrix(point)
 	}
 
@@ -75,6 +77,10 @@
 	
 	class(ret) <- "delaunayTriangulation"
 
+	
+  ret$tri[is.na(ret$tri)] = 0
+  ret$tri = ret$tri + 1
+	
 	
 	if (!full) {
 		return(ret$tri)
