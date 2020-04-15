@@ -14,7 +14,7 @@
 ##' y = c(35,80,70,50,60,20)
 ##' p = data.frame(x,y)
 ##' ch = convex(point = p)
-##' plot(p)
+##' plot(p, pch=as.character(seq(nrow(p))))
 ##' polygon(ch$convexSet, border="red")
 #' @export
   convex <- function(point=NULL, options=NULL) {
@@ -60,14 +60,14 @@
 
 	ret <-.Call("C_convex", point, as.character(options), tmpdir, PACKAGE="alphashape")
 	
-	class(ret) <- "convexhull"
+	class(ret) <- "convexHull"
+	names(ret)[1] = "edgeIndex"
 	# Create point indexing to fit R's numbering system
-	ret$convexhull[is.na(ret$convexhull)] = 0
-	ret$convexhull = ret$convexhull + 1
+	ret$edgeIndex[is.na(ret$edgeIndex)] = 0
+	ret$edgeIndex = ret$edgeIndex + 1
 	# Extract the convex set information
-	ret$convexSetIndex = unique(c(as.integer(ret$convexhull)))
-	ret$convexSet = point[ret$convexSetIndex,]
-	ret$inputPoints = point
+	ret$setIndex = unique(c(as.integer(ret$edgeIndex)))
+	ret$setPoints = point[ret$convexSetIndex,]
 	
 	return(ret)
   }
