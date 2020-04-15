@@ -1,6 +1,5 @@
 ##' @title Convex hull in N-dimensions. 
-##' @description  This function calculates the  Convex hull in N-dimensions using the qhull library
-##'
+##' @description  This function calculates the convex hull in N-dimensions using the qhull library
 ##'
 ##' @param point \code{point} is an \code{n}-by-\code{dim} of dataframe or matrix. The rows of
 ##'   \code{point} represent \code{n} points in \code{dim}-dimensional
@@ -13,10 +12,12 @@
 ##' # define point
 ##' x = c(30,70,20,50,40,70)
 ##' y = c(35,80,70,50,60,20)
-##' p =data.frame(x,y)
-##' convex =convex(point=p)
+##' p = data.frame(x,y)
+##' ch = convexhull(point = p)
+##' plot(p)
+##' polygon(ch$convexSet, border="red")
 #' @export
-  convex <- function(point=NULL, options=NULL) {
+  convexhull <- function(point=NULL, options=NULL) {
 	## Check directory writable
 	tmpdir <- tempdir()
 	## R should guarantee the tmpdir is writable, but check in any case
@@ -24,13 +25,10 @@
 		stop(paste("Unable to write to R temporary directory", tmpdir, "\n"))
 	}
 	
-	
 	## Coerce the input to be matrix
-
 	if(is.null(point)){
 		stop(paste("dataframe or matrix in n-dimension is needed", "\n"))
 	}
-	
 	
 	if(!is.data.frame(point) & !is.matrix(point)){
 	  stop(paste("Point must be a dataframe or matrix", "\n"))
@@ -38,7 +36,6 @@
 	if (is.data.frame(point)) {
 	  point <- as.matrix(point)
 	}
-	
 	
 	## Make sure we have real-valued input
 	storage.mode(point) <- "double"
@@ -49,7 +46,6 @@
 		stop("The first argument should not contain any NAs")
 	}
 	
-
 	options <- "Qt"
 	
 	options <- paste(options, collapse=" ")
@@ -62,16 +58,16 @@
 		options <- paste(options, "Qt")
 	}
 
-	
 	ret <-.Call("C_convex", point, as.character(options), tmpdir, PACKAGE="alphashape")
 	
-
-	class(ret) <- "convexthull"
-	ret$convexhull[is.na(ret$convexhulhull)] = 0
+	class(ret) <- "convexhull"
+	# Create point indexing to fit R's numbering system
+	ret$convexhull[is.na(ret$convexhull)] = 0
 	ret$convexhull = ret$convexhull + 1
-	nodes = unique(c(as.integer(ret$convexhull)))
-	ret$convexPoints = point[nodes,]
-	ret$inputPoints =point
+	# Extract the convex set information
+	ret$convexSetIndex = unique(c(as.integer(ret$convexhull)))
+	ret$convexSet = point[ret$convexSetIndex,]
+	ret$inputPoints = point
 	
 	return(ret)
   }
