@@ -1,23 +1,27 @@
-##' @title Convex hull in N-dimensions. 
-##' @description  This function calculates the convex hull in N-dimensions using the qhull library
+##' @title Convex hull in d-dimensions. 
+##' @description  This function calculates the convex hull in \code{d}-
+##' dimensional space using the qhull library.
 ##'
-##' @param point \code{point} is an \code{n}-by-\code{dim} of dataframe or matrix. The rows of
-##'   \code{point} represent \code{n} points in \code{dim}-dimensional
-##'   space.
-##' @param options String containing extra options for the underlying Qhull command.(See the Qhull documentation (\url{../doc/html/qdelaun.html}) for the available options.) The
-##'   \code{Qbb} option is always passed to Qhull. The default options are \code{Qt}.  The degenerate (zero area) regions are returned
-##'   For silent operation, specify the option \code{Pp}.
+##' @param points \code{points} is an \code{n}-by-\code{d} of dataframe or 
+##'   matrix. The rows of \code{points} represent \code{n} points in \code{d}-
+##'   dimensional space.
+##' @param options String containing extra options for the underlying Qhull 
+##'   command.(See the Qhull documentation (\url{../doc/html/qdelaun.html}) for 
+##'   the available options.) The \code{Qbb} option is always passed to Qhull. 
+##'   The default options are \code{Qt}.  The degenerate (zero area) regions are
+##'   returned. For silent operation, specify the option \code{Pp}.
 ##' @seealso Used internally by \code{\link{convex}}
 ##' @examples 
-##' # define point
+##' # Define points
 ##' x = c(30,70,20,50,40,70)
 ##' y = c(35,80,70,50,60,20)
 ##' p = data.frame(x,y)
-##' ch = convex(point = p)
+##' # Create convex hull and plot
+##' ch = convex(points = p)
 ##' plot(p, pch=as.character(seq(nrow(p))))
-##' polygon(ch$convexSet, border="red")
+##' polygon(ch$setPoints, border="red")
 #' @export
-  convex <- function(point=NULL, options=NULL) {
+  convex <- function(points=NULL, options=NULL) {
 	## Check directory writable
 	tmpdir <- tempdir()
 	## R should guarantee the tmpdir is writable, but check in any case
@@ -26,23 +30,23 @@
 	}
 	
 	## Coerce the input to be matrix
-	if(is.null(point)){
+	if(is.null(points)){
 		stop(paste("dataframe or matrix in n-dimension is needed", "\n"))
 	}
 	
-	if(!is.data.frame(point) & !is.matrix(point)){
-	  stop(paste("Point must be a dataframe or matrix", "\n"))
+	if(!is.data.frame(points) & !is.matrix(points)){
+	  stop(paste("Points must be a dataframe or matrix", "\n"))
 	}
-	if (is.data.frame(point)) {
-	  point <- as.matrix(point)
+	if (is.data.frame(points)) {
+	  points <- as.matrix(points)
 	}
 	
 	## Make sure we have real-valued input
-	storage.mode(point) <- "double"
+	storage.mode(points) <- "double"
 	
 	## We need to check for NAs in the input, as these will crash the C
 	## code.
-	if (any(is.na(point))) {
+	if (any(is.na(points))) {
 		stop("The first argument should not contain any NAs")
 	}
 	
@@ -58,14 +62,14 @@
 		options <- paste(options, "Qt")
 	}
 
-	ret <-.Call("C_convex", point, as.character(options), tmpdir, PACKAGE="alphashape")
+	ret <-.Call("C_convex", points, as.character(options), tmpdir, PACKAGE="alphashape")
 	
 	# Create point indexing to fit R's numbering system
 	ret$convexhull[is.na(ret$convexhull)] = 0
 	ret$convexhull = ret$convexhull + 1
 	# Extract the convex set information
 	ret$setIndex = unique(c(as.integer(ret$convexhull)))
-	ret$setPoints = point[ret$setIndex,]
+	ret$setPoints = points[ret$setIndex,]
 	
 	return(ret)
   }
