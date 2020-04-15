@@ -60,14 +60,12 @@
 
 	ret <-.Call("C_convex", point, as.character(options), tmpdir, PACKAGE="alphashape")
 	
-	class(ret) <- "convexHull"
-	names(ret)[1] = "edgeIndex"
 	# Create point indexing to fit R's numbering system
-	ret$edgeIndex[is.na(ret$edgeIndex)] = 0
-	ret$edgeIndex = ret$edgeIndex + 1
+	ret$convexhull[is.na(ret$convexhull)] = 0
+	ret$convexhull = ret$convexhull + 1
 	# Extract the convex set information
-	ret$setIndex = unique(c(as.integer(ret$edgeIndex)))
-	ret$setPoints = point[ret$convexSetIndex,]
+	ret$setIndex = unique(c(as.integer(ret$convexhull)))
+	ret$setPoints = point[ret$setIndex,]
 	
 	return(ret)
   }
