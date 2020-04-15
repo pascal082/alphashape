@@ -13,11 +13,11 @@
 ##' x = c(30,70,20,50,40,70)
 ##' y = c(35,80,70,50,60,20)
 ##' p = data.frame(x,y)
-##' ch = convexhull(point = p)
+##' ch = convex(point = p)
 ##' plot(p)
 ##' polygon(ch$convexSet, border="red")
 #' @export
-  convexhull <- function(point=NULL, options=NULL) {
+  convex <- function(point=NULL, options=NULL) {
 	## Check directory writable
 	tmpdir <- tempdir()
 	## R should guarantee the tmpdir is writable, but check in any case
