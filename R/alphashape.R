@@ -52,7 +52,7 @@ getAlphaShape <- function(point,alphaRange,maxs,mins,n) {
   }
   
   #check point
-  if (!is.data.frame(point) || !is.matrix(point) ){
+  if (!is.data.frame(point) & !is.matrix(point) ){
     error=append(error,paste0("Point must be a dataframe or matrix", "\n"))
   }
   

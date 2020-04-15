@@ -26,7 +26,7 @@
 	}
 	
 	
-	if (!is.data.frame(point)|| !is.matrix(point)) {
+	if (!is.data.frame(point) & !is.matrix(point)) {
 	  stop(paste("Point must be a dataframe or matrix", "\n"))
 	}
 	

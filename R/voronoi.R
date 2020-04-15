@@ -25,7 +25,7 @@ voronoi <- function(point=NULL, options=NULL, full=TRUE) {
 	}
 
 	
-	if(!is.data.frame(point) || !is.matrix(point)){
+	if(!is.data.frame(point) & !is.matrix(point)){
 	  stop("point must be a dataframe or matrix ");
 	}
 	if(!is.matrix(point)){
