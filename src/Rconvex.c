@@ -173,14 +173,14 @@ SEXP C_convex(const SEXP p, const SEXP options, SEXP tmpdir)
   
   
   SET_VECTOR_ELT(retlist, 0, retval);
-  SET_VECTOR_ELT(retnames, 0, mkChar("convexhull"));
+  SET_VECTOR_ELT(retnames, 0, mkChar("convex_hull"));
   
   setAttrib(retlist, R_NamesSymbol, retnames);
   
   
   
   tag = PROTECT(allocVector(STRSXP, 1));
-  SET_STRING_ELT(tag, 0, mkChar("convexhull"));
+  SET_STRING_ELT(tag, 0, mkChar("convex_hull"));
   ptr = PROTECT(R_MakeExternalPtr(qh, tag, R_NilValue));
   
   

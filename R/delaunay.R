@@ -67,25 +67,25 @@
 	}
 
 
-	ret <- .Call("C_delaunayn", point, as.character(options), tmpdir, PACKAGE="alphashape")
+	delaunay <- .Call("C_delaunayn", point, as.character(options), tmpdir, PACKAGE="alphashape")
 	
 
 	if (nrow(ret$tri) == 1 ) {
-		ret$areas <- NUll
-		ret$neighbours <- NULL
+	  delaunay$areas <- NUll
+	  delaunay$neighbours <- NULL
 	} 
 	
-	class(ret) <- "delaunayTriangulation"
+	class( delaunay) <- "delaunayTriangulation"
 
 	
-  ret$tri[is.na(ret$tri)] = 0
-  ret$tri = ret$tri + 1
+	delaunay$tri[is.na(ret$tri)] = 0
+	delaunay$tri = ret$tri + 1
 	
 	
 	if (!full) {
 		return(ret$tri)
 	}
-	ret$inputPoints =point
+	delaunay$inputPoints =point
 	
-	return(ret)
+	return( delaunay)
 }

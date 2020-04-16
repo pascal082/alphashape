@@ -7,7 +7,7 @@
 delaunay(point = NULL, options = NULL, full = FALSE)
 }
 \arguments{
-\item{point}{\code{point} is an \code{n}-by-\code{dim} dataframe. The rows of
+\item{point}{\code{point} is an \code{n}-by-\code{dim} dataframevor matrix. The rows of
 \code{point} represent \code{n} points in \code{dim}-dimensional
 space.}
 

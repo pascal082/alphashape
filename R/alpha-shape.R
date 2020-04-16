@@ -16,7 +16,7 @@ NULL
 
 
 
-##' @title getAlphaShape
+##' @title alpha_shape
 ##' @description Compute an alpha Shape Grid using the Q-hull library. 
 ##' @param point observation as dataframe or matrix
 ##' @param alphaRange, range of alpha value
@@ -29,9 +29,9 @@ NULL
 ##'  x = c(30,70,20,50,40,70,20)
 ##'  y = c(35,80,70,50,60,20,30)
 ##'  p = data.frame(x,y)
-##'  aShape(point = p,maxs = c(70,80),mins = c(20,20),n = 5,alphaRange = c(1:20))
-#' @export getAlphaShape
-getAlphaShape <- function(point,alphaRange,maxs,mins,n) {
+##'  alpha_shape(point = p,maxs = c(70,80),mins = c(20,20),n = 5,alphaRange = c(1:20))
+#' @export alpha_shape
+alpha_shape <- function(point,alphaRange,maxs,mins,n) {
   
   tmpdir <- tempdir()
   error= list()
@@ -52,7 +52,7 @@ getAlphaShape <- function(point,alphaRange,maxs,mins,n) {
   }
   
   #check point
-  if (!is.data.frame(point) & !is.matrix(point) ){
+  if (!is.data.frame(point) || !is.matrix(point) ){
     error=append(error,paste0("Point must be a dataframe or matrix", "\n"))
   }
   
@@ -125,12 +125,12 @@ getAlphaShape <- function(point,alphaRange,maxs,mins,n) {
     
     
     #create mesh grid
-    meshGrdiSpace = grid.coords(mins, maxs, nCoords=n)
+    meshGrdiSpace = grid_coordinates(mins, maxs, nCoords=n)
     
     
     #Secondly, each point which is inside the convex hull is now check to determine if the center lies in any of the trigulation, and if found the trigulation index is return
     #Secondly, each point which is inside the convex hull is now check to determine if the center lies in any of the trigulation, and if found the trigulation index is return
-    gridSpaceSimplex <- findSimplex(tri, inputPoint,meshGrdiSpace)
+    gridSpaceSimplex <- find_simplex(tri, inputPoint,meshGrdiSpace)
     
     
     alphaComplexSimplicesList =NULL
@@ -169,7 +169,7 @@ getAlphaShape <- function(point,alphaRange,maxs,mins,n) {
 
 
 #Internal function use by \code{\link{findSimplex}} to calculate the bycentri co-ordinate
-getBycentriCoordinate <- function(X, P) {
+get_ny_centri_coordinate <- function(X, P) {
   M <- nrow(P)
   N <- ncol(P)
   if (ncol(X) != N) {

@@ -12,10 +12,10 @@
 ##'  y = c(35,80,70,50,60,20)
 ##'  p = data.frame(x,y)
 ##'  v=voronoi(point =p)
-##'  meshGrdiSpace = grid.coords(mins=c(15,0), maxs=c(35,200), nCoords=5)
-##'  simplex <- findSimplex(v$tri, v$inputPoint,meshGrdiSpace)
+##'  meshGrdiSpace = grid_coordinates(mins=c(15,0), maxs=c(35,200), nCoords=5)
+##'  simplex <- find_simplex(v$tri, v$inputPoints,meshGrdiSpace)
 #' @export
-findSimplex <- function(tri,inputPoint,testPoint) {
+find_simplex <- function(tri,inputPoint,testPoint) {
   
   if(!is.data.frame(testPoint)){
     stop("please supply a test point dataframe")
@@ -23,10 +23,10 @@ findSimplex <- function(tri,inputPoint,testPoint) {
  
   #Identify the simplicies that each grid point belongs 
   #First this is done by first computing the convex hull and testing if each of the grid points lies in the hull
-  hull <- convex(point = inputPoint)
+  hull <- convex_hull(point = inputPoint)
   
   #grid points in convex hull
-  inHull = inconvexhull(hull, testPoint)
+  inHull = in_convex_hull(hull, testPoint)
   
   tri=as.matrix(tri)
   

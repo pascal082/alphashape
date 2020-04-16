@@ -1,4 +1,4 @@
-##' @title Convex hull in d-dimensions. 
+##' @title convex_hull in d-dimensions. 
 ##' @description  This function calculates the convex hull in \code{d}-
 ##' dimensional space using the qhull library.
 ##'
@@ -17,11 +17,11 @@
 ##' y = c(35,80,70,50,60,20)
 ##' p = data.frame(x,y)
 ##' # Create convex hull and plot
-##' ch = convex(points = p)
+##' ch = convex_hull(points = p)
 ##' plot(p, pch=as.character(seq(nrow(p))))
 ##' polygon(ch$setPoints, border="red")
 #' @export
-  convex <- function(points=NULL, options=NULL) {
+  convex_hull <- function(points=NULL, options=NULL) {
 	## Check directory writable
 	tmpdir <- tempdir()
 	## R should guarantee the tmpdir is writable, but check in any case
@@ -62,15 +62,15 @@
 		options <- paste(options, "Qt")
 	}
 
-	ret <-.Call("C_convex", points, as.character(options), tmpdir, PACKAGE="alphashape")
+	convex<-.Call("C_convex", points, as.character(options), tmpdir, PACKAGE="alphashape")
 	
 	# Create point indexing to fit R's numbering system
-	ret$convexhull[is.na(ret$convexhull)] = 0
-	ret$convexhull = ret$convexhull + 1
+	convex$convex_hull[is.na(convex$convex_hull)] = 0
+	convex$convex_hull = convex$convex_hull + 1
 	# Extract the convex set information
-	ret$setIndex = unique(c(as.integer(ret$convexhull)))
-	ret$setPoints = points[ret$setIndex,]
+	convex$setIndex = unique(c(as.integer(convex$convex_hull)))
+	convex$setPoints = points[convex$setIndex,]
 	
-	return(ret)
+	return(convex)
   }
   

@@ -48,6 +48,7 @@ After making changes,  build and install to your R library by running the follow
 +  R CMD Rd2pdf --title='Alpha shape' -o /d/Projects/SDMRPackages/qhull-nalphashape-package/alphashape_doc.pdf package/man/*.Rd (to regenerate the pdf file)
 devtools::install(args = c("--no-multiarch"))
 
+
 ##Installing Stable Development version from the repo
 
 There are two ways to install the stable development version.

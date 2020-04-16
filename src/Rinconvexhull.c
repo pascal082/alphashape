@@ -28,7 +28,7 @@ SEXP C_inconvexhull(const SEXP convexhull, const SEXP testPoints)
 	  qhT *qh;
 	  PROTECT(tag = allocVector(STRSXP, 1));
 
-	  SET_STRING_ELT(tag, 0, mkChar("convexhull"));
+	  SET_STRING_ELT(tag, 0, mkChar("convex_hull"));
 
 	  PROTECT(ptr = getAttrib(convexhull, tag));
 

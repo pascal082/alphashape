@@ -17,9 +17,9 @@
 #'
 #' @examples
 #' # Point space grid coordinates usage
-#' xy = grid.coords(mins=c(15,0), maxs=c(35,200), nCoords=5)
+#' xy = grid_coordinates(mins=c(15,0), maxs=c(35,200), nCoords=5)
 #' @export
-grid.coords <- function(mins, maxs, nCoords) {
+grid_coordinates <- function(mins, maxs, nCoords) {
   
   # Check input data
   if (length(mins) != length(maxs)) {

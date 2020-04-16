@@ -10,14 +10,14 @@
 ##' x = c(30,70,20,50,40,70)
 ##' y = c(35,80,70,50,60,20)
 ##' p =data.frame(x,y)
-##' convex =convex(point=p)
+##' convex =in_convex_hull(point=p)
 ##' #point to check
 ##' p2 = data.frame(x,y)
-##' inconvexhull(convex,p2)
-#' @export inconvexhull
-inconvexhull <- function(hull, points) {
+##' in_convex_hull(convex,p2)
+#' @export in_convex_hull
+in_convex_hull <- function(hull, points) {
 	
-	if(!is.data.frame(points) || !is.matrix(points)){
+	if(!is.data.frame(points) & !is.matrix(points)){
 		stop("Test input point is not a dataframe or matrix ");
 	}
   if(!is.matrix(points)){
@@ -31,4 +31,5 @@ inconvexhull <- function(hull, points) {
 	
 	
 	return(.Call("C_inconvexhull", hull$convexhull, points, PACKAGE="alphashape"))
+
 }

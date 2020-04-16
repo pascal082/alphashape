@@ -7,7 +7,7 @@
 voronoi(point = NULL, options = NULL, full = TRUE)
 }
 \arguments{
-\item{point}{\code{point} is an \code{n}-by-\code{dim} dataframe. The rows of \code{point} represent \code{n} points in \code{dim}-dimensional space.}
+\item{point}{\code{point} is an \code{n}-by-\code{dim} dataframe or matrix. The rows of \code{point} represent \code{n} points in \code{dim}-dimensional space.}
 
 \item{options}{String containing extra options for the underlying Qhull command.(See the Qhull documentation (\url{../doc/html/qvoronoi.html}) for the available options.) The
 \code{Qbb} option is always passed to Qhull. The default options are \code{Qcc Qc Qt Qz} for \code{dim} <4 and \code{Qcc Qc Qt

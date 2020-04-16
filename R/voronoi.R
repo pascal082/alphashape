@@ -29,7 +29,7 @@ voronoi <- function(point=NULL, options=NULL, full=TRUE) {
 	  stop("point must be a dataframe or matrix ");
 	}
 	if(!is.matrix(point)){
-	  points=as.matrix(point)
+	  point=as.matrix(point)
 	}
 	## Make sure we have real-valued input
 	storage.mode(point) <- "double"
