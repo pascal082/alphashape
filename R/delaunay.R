@@ -76,8 +76,7 @@
 	
 	if (full) {
 	  
-	  class(delaunay) = c("delaunay_tri", class(delaunay))
-	  
+	 
 	  
   	  if (nrow(delaunay$tri) == 1 ) {
   	    delaunay$areas <- NUll
@@ -87,9 +86,13 @@
 	}else{
      return(delaunay[1])
   }
-
+	class(delaunay) = c("delaunay_tri", class(delaunay))
+	
 	return( delaunay)
 }
-
+#' @title Print Delaunay Trigulation Object
+#' @description A function the print the delaunay_tri class without the object.
+#' @keywords internal
+#' @export
 print.delaunay_tri = function(x, ...) print(x[1:4])
   

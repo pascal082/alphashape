@@ -28,6 +28,6 @@ It works by first checking for all point inside a convex hull, and then check if
  y = c(35,80,70,50,60,20)
  p = data.frame(x,y)
  v=voronoi(point =p)
- meshGrdiSpace = grid.coords(mins=c(15,0), maxs=c(35,200), nCoords=5)
- simplex <- find_simplex(v$tri, v$inputPoint,meshGrdiSpace)
+ meshGrdiSpace = grid_coordinates(mins=c(15,0), maxs=c(35,200), nCoords=5)
+ simplex <- find_simplex(v$tri, v$inputPoints,meshGrdiSpace)
 }

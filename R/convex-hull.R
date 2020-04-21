@@ -77,5 +77,9 @@
   	return(convex)
   }
   
+  #' @title Print Convex Hull Object
+  #' @description A function the print the convex_hull class without the object.
+  #' @keywords internal
+  #' @export
   print.convex_hull = function(x, ...) print(x[2:4])
   

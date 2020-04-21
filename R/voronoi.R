@@ -79,10 +79,17 @@ voronoi <- function(point=NULL, options=NULL, full=TRUE) {
 	  return(voronoi_object[1])
 	}
 	
+
 	voronoi_object$input_point =point
 	class(voronoi_object) = c("voronoi_diagram", class(voronoi_object))
+	
+
 	
 	return(voronoi_object)
 }
 
-print.voronoi_diagram = function(x, ...) print(x[1:5])
+#' @title Print Voronoi Diagram Object
+#' @description A function the print the voronoi_diagram class without the object.
+#' @keywords internal
+#' @export
+print.voronoi_diagram <-function(x, ...) print(x[1:5])
