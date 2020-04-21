@@ -292,7 +292,7 @@ SEXP C_delaunayn(const SEXP p, const SEXP options, SEXP tmpdir)
     SET_VECTOR_ELT(retlist, 2, areas);
     SET_VECTOR_ELT(retnames, 2, mkChar("areas"));
     SET_VECTOR_ELT(retlist, 3, point0);
-    SET_VECTOR_ELT(retnames, 3, mkChar("SimplexPoints"));
+    SET_VECTOR_ELT(retnames, 3, mkChar("simplex_points"));
     setAttrib(retlist, R_NamesSymbol, retnames);
     UNPROTECT(6);
 
@@ -301,7 +301,7 @@ SEXP C_delaunayn(const SEXP p, const SEXP options, SEXP tmpdir)
 
     PROTECT(tag = allocVector(STRSXP, 1));
 
-    SET_STRING_ELT(tag, 0, mkChar("delaunayTriangulation")); //we are returning only delaunay trigulation
+    SET_STRING_ELT(tag, 0, mkChar("delaunay_tri")); //we are returning only delaunay trigulation
 
     PROTECT(ptr = R_MakeExternalPtr(qh, tag, R_NilValue));
     if (exitcode)

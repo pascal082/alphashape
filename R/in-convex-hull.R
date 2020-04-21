@@ -24,12 +24,12 @@ in_convex_hull <- function(hull, points) {
 	  points=as.matrix(points)
 	}
 	
-	if(!is.matrix(hull$convexhull)){
+	if(!is.matrix(hull$convex_hull)){
 		stop("convex hull point produce is not a matrix. Please make sure you are passing the convex hull object ");
 	
 	}
 	
 	
-	return(.Call("C_inconvexhull", hull$convexhull, points, PACKAGE="alphashape"))
+	return(.Call("C_inconvexhull", hull$convex_hull, points, PACKAGE="alphashape"))
 
 }

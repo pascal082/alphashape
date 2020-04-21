@@ -69,23 +69,27 @@
 
 	delaunay <- .Call("C_delaunayn", point, as.character(options), tmpdir, PACKAGE="alphashape")
 	
+	
+	delaunay$tri[is.na(delaunay$tri)] = 0
+	delaunay$tri = delaunay$tri + 1
+	
+	
+	if (full) {
+	  
+	  class(delaunay) = c("delaunay_tri", class(delaunay))
+	  
+	  
+  	  if (nrow(delaunay$tri) == 1 ) {
+  	    delaunay$areas <- NUll
+  	    delaunay$neighbours <- NULL
+  	  } 
+  	  delaunay$input_points =point
+	}else{
+     return(delaunay[1])
+  }
 
-	if (nrow(ret$tri) == 1 ) {
-	  delaunay$areas <- NUll
-	  delaunay$neighbours <- NULL
-	} 
-	
-	class( delaunay) <- "delaunayTriangulation"
-
-	
-	delaunay$tri[is.na(ret$tri)] = 0
-	delaunay$tri = ret$tri + 1
-	
-	
-	if (!full) {
-		return(ret$tri)
-	}
-	delaunay$inputPoints =point
-	
 	return( delaunay)
 }
+
+print.delaunay_tri = function(x, ...) print(x[1:4])
+  

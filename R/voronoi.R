@@ -59,25 +59,30 @@ voronoi <- function(point=NULL, options=NULL, full=TRUE) {
 		options <- paste(options, "Qt")
 	}
 	
-	ret <- .Call("C_voronoiR", point, as.character(options), tmpdir, PACKAGE="alphashape")
+	voronoi_object<- .Call("C_voronoiR", point, as.character(options), tmpdir, PACKAGE="alphashape")
+
+	voronoi_object$tri[is.na(voronoi_object$tri)] = 0
+	voronoi_object$tri = voronoi_object$tri + 1
 	
-	if (nrow(ret$tri) == 1) 
-	{		
-		ret$neighbours <- NULL
-		ret$voronoiVertices <- NULL
-		ret$circumRadii <- NULL
-		ret$tri <- NULL
-		
-	} 
-	ret$tri[is.na(ret$tri)] = 0
-	ret$tri = ret$tri + 1
+	if (full) {
+	  
+	  if (nrow(voronoi_object$tri) == 1) 
+	  {		
+	    voronoi_object$neighbours <- NULL
+	    voronoi_object$voronoi_vertices <- NULL
+	    voronoi_object$circumRadii <- NULL
+	    voronoi_object$tri <- NULL
+	    
+	  } 
 	
-	if (!full) {
-		return(ret$voronoiVertices)
+	}else{
+	  return(voronoi_object[1])
 	}
 	
-	ret$inputPoints =point
+	voronoi_object$input_point =point
+	class(voronoi_object) = c("voronoi_diagram", class(voronoi_object))
 	
-	class(ret) <- "Voronoi DIagram"
-	return(ret)
+	return(voronoi_object)
 }
+
+print.voronoi_diagram = function(x, ...) print(x[1:5])

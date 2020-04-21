@@ -346,18 +346,17 @@ SEXP C_voronoiR(const SEXP p, const SEXP options, SEXP tmpdir)
 	}
 	  PROTECT(retlist = allocVector(VECSXP, retlen));
 	  PROTECT(retnames = allocVector(VECSXP, retlen));
+	  SET_VECTOR_ELT(retlist, 0,voronoiVertices);
+	  SET_VECTOR_ELT(retnames, 0, mkChar("voronoi_vertices"));
+	  SET_VECTOR_ELT(retlist, 1,circumRadii);
+	  SET_VECTOR_ELT(retnames, 1, mkChar("circumRadii"));
+	  SET_VECTOR_ELT(retlist, 2, tri);
+	  SET_VECTOR_ELT(retnames, 2, mkChar("tri"));
+	  SET_VECTOR_ELT(retlist, 3, neighbours);
+	  SET_VECTOR_ELT(retnames, 3, mkChar("neighbours"));
 
-	  SET_VECTOR_ELT(retlist, 0, tri);
-	  SET_VECTOR_ELT(retnames, 0, mkChar("tri"));
-	  SET_VECTOR_ELT(retlist, 1, neighbours);
-	  SET_VECTOR_ELT(retnames, 1, mkChar("neighbours"));
-
-	  SET_VECTOR_ELT(retlist, 2,voronoiVertices);
-	  SET_VECTOR_ELT(retnames, 2, mkChar("voronoiVertices"));
-	  SET_VECTOR_ELT(retlist, 3,circumRadii);
-	  SET_VECTOR_ELT(retnames, 3, mkChar("circumRadii"));
 	  SET_VECTOR_ELT(retlist, 4,point0);
-	  SET_VECTOR_ELT(retnames, 4, mkChar("trigulationPoints"));
+	  SET_VECTOR_ELT(retnames, 4, mkChar("tri_points"));
 
 	  setAttrib(retlist, R_NamesSymbol, retnames);
 	  UNPROTECT(7);
@@ -366,7 +365,7 @@ SEXP C_voronoiR(const SEXP p, const SEXP options, SEXP tmpdir)
 		 pointer to the hull as an attribute for future use. */
 	  SEXP ptr, tag;
 	  PROTECT(tag = allocVector(STRSXP, 1));
-	  SET_STRING_ELT(tag, 0, mkChar("voronoi diagram"));
+	  SET_STRING_ELT(tag, 0, mkChar("voronoi_diagram"));
 
 
   PROTECT(ptr = R_MakeExternalPtr(qh, tag, R_NilValue));

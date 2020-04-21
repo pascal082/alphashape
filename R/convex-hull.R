@@ -62,15 +62,20 @@
 		options <- paste(options, "Qt")
 	}
 
-	convex<-.Call("C_convex", points, as.character(options), tmpdir, PACKAGE="alphashape")
-	
-	# Create point indexing to fit R's numbering system
-	convex$convex_hull[is.na(convex$convex_hull)] = 0
-	convex$convex_hull = convex$convex_hull + 1
-	# Extract the convex set information
-	convex$setIndex = unique(c(as.integer(convex$convex_hull)))
-	convex$setPoints = points[convex$setIndex,]
-	
-	return(convex)
+  	convex<-.Call("C_convex", points, as.character(options), tmpdir, PACKAGE="alphashape")
+  	
+  	# Create point indexing to fit R's numbering system
+  	convex$convex_hull[is.na(convex$convex_hull)] = 0
+  	edges = convex$convex_hull + 1
+  	# Extract the convex set information
+  	convex$hull_edges= as.data.frame(edges)
+  	convex$hull_indices = unique(c(as.integer(convex$convex_hull)))
+  	convex$hull_points = points[convex$setIndex,]
+  
+  	class(convex) = c("convex_hull", class(convex))
+  
+  	return(convex)
   }
+  
+  print.convex_hull = function(x, ...) print(x[2:4])
   
