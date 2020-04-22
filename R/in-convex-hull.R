@@ -29,7 +29,9 @@ in_convex_hull <- function(hull, points) {
 	
 	}
 	
-	
-	return(.Call("C_inconvexhull", hull$convex_hull, points, PACKAGE="alphashape"))
+	#modify R numbering to C by adding -1
+  hull_index = hull$convex_hull -1
+  
+	return(.Call("C_inconvexhull", hull_index, points, PACKAGE="alphashape"))
 
 }

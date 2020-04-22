@@ -2,35 +2,41 @@
 % Please edit documentation in R/convex-hull.R
 \name{convex_hull}
 \alias{convex_hull}
-\title{convex_hull in d-dimensions.}
+\title{Convex hull in \eqn{d}-dimensions.}
 \usage{
 convex_hull(points = NULL, options = NULL)
 }
 \arguments{
-\item{points}{\code{points} is an \code{n}-by-\code{d} of dataframe or 
-matrix. The rows of \code{points} represent \code{n} points in \code{d}-
+\item{points}{\code{points} is an \eqn{n}-by-\eqn{d} of dataframe or
+matrix. The rows of \code{points} represent \eqn{n} points in \code{d}-
 dimensional space.}
 
-\item{options}{String containing extra options for the underlying Qhull 
-command.(See the Qhull documentation (\url{../doc/html/qdelaun.html}) for 
-the available options.) The \code{Qbb} option is always passed to Qhull. 
+\item{options}{String containing extra options for the underlying Qhull
+command.(See the Qhull documentation (\url{../doc/html/qdelaun.html}) for
+the available options.) The \code{Qbb} option is always passed to Qhull.
 The default options are \code{Qt}.  The degenerate (zero area) regions are
 returned. For silent operation, specify the option \code{Pp}.}
 }
+\value{
+Returns a list consisting of...
+}
 \description{
-This function calculates the convex hull in \code{d}-
-dimensional space using the qhull library.
+This function calculates the 
+\href{https://en.wikipedia.org/wiki/Convex_hull}{convex hull} around a set of
+\eqn{n} points in \eqn{d}-dimensional space using the
+\href{http://www.qhull.org}{Qhull} library.
 }
 \examples{
 # Define points
-x = c(30,70,20,50,40,70)
-y = c(35,80,70,50,60,20)
-p = data.frame(x,y)
-# Create convex hull and plot
-ch = convex_hull(points = p)
-plot(p, pch=as.character(seq(nrow(p))))
-polygon(ch$setPoints, border="red")
+plot(p, pch = as.character(seq(nrow(p))))
+polygon(ch$setPoints, border = "red")
+
+}
+\references{
+Barber CB, Dobkin DP, Huhdanpaa H. The Quickhull algorithm for 
+convex hulls. ACM Transactions on Mathematical Software. 1996;22(4):469-83.
+\url{https://doi.org/10.1145/235815.235821}
 }
 \seealso{
-Used internally by \code{\link{convex}}
+Used internally by \code{\link{convex_layer}}
 }

@@ -59,10 +59,18 @@ voronoi <- function(point=NULL, options=NULL, full=TRUE) {
 		options <- paste(options, "Qt")
 	}
 	
-	voronoi_object<- .Call("C_voronoiR", point, as.character(options), tmpdir, PACKAGE="alphashape")
-
-	voronoi_object$tri[is.na(voronoi_object$tri)] = 0
-	voronoi_object$tri = voronoi_object$tri + 1
+	result<- .Call("C_voronoiR", point, as.character(options), tmpdir, PACKAGE="alphashape")
+ 
+	#list to hold the voronoi_object
+	voronoi_object =list()
+	
+	#re-index from C numbering to R
+	result$tri[is.na(result$tri)] = 0 
+	tri= result$tri + 1
+	
+	
+	#add to element to voronoi_object list
+	voronoi_object$tri = tri
 	
 	if (full) {
 	  
@@ -73,16 +81,19 @@ voronoi <- function(point=NULL, options=NULL, full=TRUE) {
 	    voronoi_object$circumRadii <- NULL
 	    voronoi_object$tri <- NULL
 	    
-	  } 
-	
+	  }else{
+	    voronoi_object$neighbours <- result$neighbours
+	    voronoi_object$voronoi_vertices <- result$voronoi_vertices
+	    voronoi_object$circumRadii <- result$circumRadii
+	    voronoi_object$tri <- result$tri 
+	  }
+	  voronoi_object$input_point =point
 	}else{
 	  return(voronoi_object[1])
 	}
 	
 
-	voronoi_object$input_point =point
-	class(voronoi_object) = c("voronoi_diagram", class(voronoi_object))
-	
+
 
 	
 	return(voronoi_object)

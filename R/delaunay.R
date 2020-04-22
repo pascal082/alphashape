@@ -67,32 +67,30 @@
 	}
 
 
-	delaunay <- .Call("C_delaunayn", point, as.character(options), tmpdir, PACKAGE="alphashape")
+	result <- .Call("C_delaunayn", point, as.character(options), tmpdir, PACKAGE="alphashape")
 	
+	#list to hold result
+	delaunay =list()
 	
-	delaunay$tri[is.na(delaunay$tri)] = 0
-	delaunay$tri = delaunay$tri + 1
+	#re-index from C numbering to R
+	result$tri[is.na(result$tri)] <- 0
+	tri = result$tri + 1
 	
-	
+	# Add element to delaunay list
+	delaunay$tri = tri
 	if (full) {
-	  
-	 
-	  
+	
   	  if (nrow(delaunay$tri) == 1 ) {
-  	    delaunay$areas <- NUll
+  	    delaunay$areas <- NULL
   	    delaunay$neighbours <- NULL
-  	  } 
+  	  }else{
+  	    delaunay$areas <- result$areas
+  	    delaunay$neighbours <- result$neighbours
+  	  }
   	  delaunay$input_points =point
 	}else{
      return(delaunay[1])
   }
-	class(delaunay) = c("delaunay_tri", class(delaunay))
-	
+
 	return( delaunay)
 }
-#' @title Print Delaunay Trigulation Object
-#' @description A function the print the delaunay_tri class without the object.
-#' @keywords internal
-#' @export
-print.delaunay_tri = function(x, ...) print(x[1:4])
-  

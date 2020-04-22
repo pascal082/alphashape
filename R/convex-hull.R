@@ -23,11 +23,11 @@
 #' 
 #' @examples
 #' # Define points
-#' x = c(30, 70, 20, 50, 40, 70)
-#' y = c(35, 80, 70, 50, 60, 20)
-#' p = data.frame(x, y)
-#' # Create convex hull and plot
-#' ch = convex_hull(points = p)
+# x = c(30, 70, 20, 50, 40, 70)
+# y = c(35, 80, 70, 50, 60, 20)
+# p = data.frame(x, y)
+# # Create convex hull and plot
+# ch = convex_hull(points = p)
 #' plot(p, pch = as.character(seq(nrow(p))))
 #' polygon(ch$setPoints, border = "red")
 #' 
@@ -35,6 +35,7 @@
   convex_hull <- function(points=NULL, options=NULL) {
 	# Check directory writable
 	tmpdir <- tempdir()
+
 	# R should guarantee the tmpdir is writable, but check in any case
 	if (file.access(tmpdir, 2) == -1) {
 		stop(paste("Unable to write to R temporary directory", tmpdir, "\n"))
@@ -71,24 +72,19 @@
 		options <- paste(options, "Qt")
 	}
 
-  	convex<-.Call("C_convex", points, as.character(options), tmpdir, PACKAGE="alphashape")
+  	result<-.Call("C_convex", points, as.character(options), tmpdir, PACKAGE="alphashape")
   	
+  	convex= list()
   	# Create point indexing to fit R's numbering system
-  	convex$convex_hull[is.na(convex$convex_hull)] <- 0
-  	edges <- convex$convex_hull + 1
-  	# Extract the convex hull information
-  	convex$hull_edges <- as.data.frame(edges)
-  	convex$hull_indices <- unique(c(as.integer(convex$hull_edges)))
+  	result$convex_hull[is.na(result$convex_hull)] <- 0
+  	edges <- as.data.frame(result$convex_hull + 1)
+  	
+  	# Extract the convex hull information and create new list
+  	convex$hull_edges <- as.matrix(edges)
+  	convex$hull_indices <- unique(c(as.integer(result$convex_hull + 1)))
   	convex$hull_points <- points[convex$hull_indices,]
-  
-  	class(convex) <- c("convex_hull", class(convex))
   
   	return(convex)
   }
-  
-  #' @title Print convex hull object
-  #' @description A function to print the convex_hull class without the object.
-  #' @keywords internal
-  #' @export
-  print.convex_hull <- function(x, ...) print(x[2:4])
+ 
   
