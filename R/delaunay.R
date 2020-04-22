@@ -17,7 +17,7 @@
 ##' p = data.frame(x,y)
 ##' delaunay =delaunay(point=p)
 #' @export
-  delaunay <- function(point=NULL, options=NULL, full=FALSE) {
+  delaunay <- function(point=NULL, options=NULL, full=TRUE) {
 	## Check directory writable
 	tmpdir <- tempdir()
 	## R should guarantee the tmpdir is writable, but check in any case

@@ -22,16 +22,23 @@ in_convex_hull <- function(hull, points) {
 	}
   if(!is.matrix(points)){
 	  points=as.matrix(points)
-	}
-	
-	if(!is.matrix(hull$convex_hull)){
-		stop("convex hull point produce is not a matrix. Please make sure you are passing the convex hull object ");
-	
-	}
-	
-	#modify R numbering to C by adding -1
-  hull_index = hull$convex_hull -1
+  }
   
-	return(.Call("C_inconvexhull", hull_index, points, PACKAGE="alphashape"))
+  
+# REMOVED
+# 	if(!is.matrix(hull$convex_hull)){
+# 		stop("convex hull point produce is not a matrix. Please make sure you are passing the convex hull object ");
+# 	
+# 	}
+# 	
+# 	#modify R numbering to C by adding -1
+#   hull_index = hull$convex_hull -1
+  
+# REPLACED WITH
+  # Using the convex hull lists recreate the convex hull in C
+  options <- "Qt"
+  convex_hull <- .Call("C_convex", hull$hull_points, as.character(options), tmpdir, PACKAGE="alphashape")
+
+	return(.Call("C_inconvexhull", convex_hull, points, PACKAGE="alphashape"))
 
 }

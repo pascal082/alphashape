@@ -5,8 +5,8 @@
 #' \href{http://www.qhull.org}{Qhull} library.
 #'
 #' @param points \code{points} is an \eqn{n}-by-\eqn{d} of dataframe or
-#'   matrix. The rows of \code{points} represent \eqn{n} points in \code{d}-
-#'   dimensional space.
+#'   matrix. The rows of \code{points} represent \eqn{n} points in 
+#'   \eqn{d}-dimensional space.
 #' @param options String containing extra options for the underlying Qhull
 #'   command.(See the Qhull documentation (\url{../doc/html/qdelaun.html}) for
 #'   the available options.) The \code{Qbb} option is always passed to Qhull.
@@ -17,19 +17,19 @@
 #'
 #' @seealso Used internally by \code{\link{convex_layer}}
 #' 
-#' @references Barber CB, Dobkin DP, Huhdanpaa H. The Quickhull algorithm for 
-#' convex hulls. ACM Transactions on Mathematical Software. 1996;22(4):469-83.
-#' \url{https://doi.org/10.1145/235815.235821}
+#' @references Barber CB, Dobkin DP, Huhdanpaa H (1996) The Quickhull algorithm 
+#' for convex hulls. ACM Transactions on Mathematical Software, 22(4):469-83 
+#' \url{https://doi.org/10.1145/235815.235821}.
 #' 
 #' @examples
 #' # Define points
-# x = c(30, 70, 20, 50, 40, 70)
-# y = c(35, 80, 70, 50, 60, 20)
-# p = data.frame(x, y)
-# # Create convex hull and plot
-# ch = convex_hull(points = p)
+#' x <- c(30, 70, 20, 50, 40, 70)
+#' y <- c(35, 80, 70, 50, 60, 20)
+#' p <- data.frame(x, y)
+#' # Create convex hull and plot
+#' ch <- convex_hull(points = p)
 #' plot(p, pch = as.character(seq(nrow(p))))
-#' polygon(ch$setPoints, border = "red")
+#' polygon(ch$hull_points, border = "red")
 #' 
 #' @export
   convex_hull <- function(points=NULL, options=NULL) {
@@ -72,19 +72,19 @@
 		options <- paste(options, "Qt")
 	}
 
-  	result<-.Call("C_convex", points, as.character(options), tmpdir, PACKAGE="alphashape")
+  	result <- .Call("C_convex", points, as.character(options), tmpdir, PACKAGE="alphashape")
   	
-  	convex= list()
   	# Create point indexing to fit R's numbering system
   	result$convex_hull[is.na(result$convex_hull)] <- 0
   	edges <- as.data.frame(result$convex_hull + 1)
   	
-  	# Extract the convex hull information and create new list
+  	# Create list to return the desired convex hull information
+  	convex <- list()
   	convex$hull_edges <- as.matrix(edges)
   	convex$hull_indices <- unique(c(as.integer(result$convex_hull + 1)))
   	convex$hull_points <- points[convex$hull_indices,]
+  	convex$input_points <- points
   
   	return(convex)
   }
  
-  
