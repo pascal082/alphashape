@@ -1,15 +1,20 @@
-#' @title Delaunay triangulation in N-dimensions. 
-#' @description  The Delaunay triangulation is a tessellation of the convex hull of the points such that no N-sphere defined by the N-triangles
-#' contains any other points from the set. This function calculates the Delaunay triangulation  in N-dimensions using the qhull library
-#' @param point \code{point} is an \code{n}-by-\code{dim} dataframevor matrix. The rows of
-#'   \code{point} represent \code{n} points in \code{dim}-dimensional
-#'   space.
-#' @param options String containing extra options for the underlying Qhull command.(See the Qhull documentation (\url{../doc/html/qdelaun.html}) for the available options.) The
-#'   \code{Qbb} option is always passed to Qhull. The default options are \code{Qcc Qc Qt Qz} for \code{dim} <4 and \code{Qcc Qc Qt Qx} for \code{dim}>=4.  If neither of the \code{QJ} or \code{Qt}
-#'   options are supplied, the \code{Qt} option is passed to Qhull. The \code{Qt} option ensures all Delaunay regions are simplical
-#'   (e.g., triangles in 2-d).  See \url{../doc/html/qdelaun.html} for more details. The degenerate (zero area) regions are returned For silent operation, specify the option \code{Pp}.
-#' @param full Return all information associated with the triangulation as a list and these are triangulation (\code{tri}), a  vector of facet areas (\code{areas}) and a list of neighbours of
-#'   each facet (\code{neighbours}) OR return the convexhull and the input point
+#' @title Delaunay triangulation
+#' 
+#' @description  This function calculates the 
+#' \href{https://en.wikipedia.org/wiki/Delaunay_triangulation}{Delaunay triangulation} 
+#' of a set of \eqn{n} points in \eqn{d}-dimensional space using the
+#' \href{http://www.qhull.org}{Qhull} library.
+#' 
+#' @param points a \eqn{n}-by-\eqn{d} dataframe or matrix. The rows
+#'   represent \eqn{n} points and the \eqn{d} columns the coordinates in 
+#'   \eqn{d}-dimensional space.
+#'   
+#' @return Returns a list consisting of...
+#' 
+#' @references Barber CB, Dobkin DP, Huhdanpaa H (1996) The Quickhull algorithm 
+#' for convex hulls. ACM Transactions on Mathematical Software, 22(4):469-83 
+#' \url{https://doi.org/10.1145/235815.235821}.
+#' 
 #' @examples 
 #' # Define points
 #' x <- c(30, 70, 20, 50, 40, 70)

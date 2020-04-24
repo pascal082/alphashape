@@ -1,17 +1,13 @@
-#' @title Convex hull in \eqn{d}-dimensions.
+#' @title Convex hull
+#' 
 #' @description  This function calculates the 
 #' \href{https://en.wikipedia.org/wiki/Convex_hull}{convex hull} around a set of
 #' \eqn{n} points in \eqn{d}-dimensional space using the
 #' \href{http://www.qhull.org}{Qhull} library.
 #'
-#' @param points \code{points} is an \eqn{n}-by-\eqn{d} of dataframe or
-#'   matrix. The rows of \code{points} represent \eqn{n} points in 
+#' @param points a \eqn{n}-by-\eqn{d} dataframe or matrix. The rows
+#'   represent \eqn{n} points and the \eqn{d} columns the coordinates in 
 #'   \eqn{d}-dimensional space.
-#' @param options String containing extra options for the underlying Qhull
-#'   command.(See the Qhull documentation (\url{../doc/html/qdelaun.html}) for
-#'   the available options.) The \code{Qbb} option is always passed to Qhull.
-#'   The default options are \code{Qt}.  The degenerate (zero area) regions are
-#'   returned. For silent operation, specify the option \code{Pp}.
 #'   
 #' @return Returns a list consisting of...
 #'

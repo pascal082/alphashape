@@ -2,20 +2,14 @@
 % Please edit documentation in R/convex-hull.R
 \name{convex_hull}
 \alias{convex_hull}
-\title{Convex hull in \eqn{d}-dimensions.}
+\title{Convex hull}
 \usage{
 convex_hull(points = NULL)
 }
 \arguments{
-\item{points}{\code{points} is an \eqn{n}-by-\eqn{d} of dataframe or
-matrix. The rows of \code{points} represent \eqn{n} points in 
+\item{points}{a \eqn{n}-by-\eqn{d} dataframe or matrix. The rows
+represent \eqn{n} points and the \eqn{d} columns the coordinates in 
 \eqn{d}-dimensional space.}
-
-\item{options}{String containing extra options for the underlying Qhull
-command.(See the Qhull documentation (\url{../doc/html/qdelaun.html}) for
-the available options.) The \code{Qbb} option is always passed to Qhull.
-The default options are \code{Qt}.  The degenerate (zero area) regions are
-returned. For silent operation, specify the option \code{Pp}.}
 }
 \value{
 Returns a list consisting of...
