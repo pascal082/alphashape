@@ -4,7 +4,7 @@
 \alias{voronoi}
 \title{Get Voronoi triangle and Delaunay triangulation}
 \usage{
-voronoi(point = NULL, options = NULL, full = TRUE)
+voronoi(points = NULL)
 }
 \arguments{
 \item{point}{\code{point} is an \code{n}-by-\code{dim} dataframe or matrix. The rows of \code{point} represent \code{n} points in \code{dim}-dimensional space.}
@@ -25,8 +25,11 @@ for a set of points. Each region contains those points that are nearer one input
 The Delaunay triangulation is a tessellation of the convex hull ofthe points such that no N-sphere defined by the N-triangles contains any other points from the set.
 }
 \examples{
-x = c(30,70,20,50,40,70)
-y = c(35,80,70,50,60,20)
-p = data.frame(x,y)
-voronoi(point =p)
+# Define points
+x <- c(30, 70, 20, 50, 40, 70)
+y <- c(35, 80, 70, 50, 60, 20)
+p <- data.frame(x, y)
+# Create Voronoi diagram and plot
+vd <- voronoi(points = p)
+plot(p, pch = as.character(seq(nrow(p))))
 }

@@ -3,6 +3,7 @@
 \docType{package}
 \name{alphashape}
 \alias{alphashape}
+\alias{alphashape-package}
 \title{Computation of n dimension \eqn{\alpha}-shape}
 \description{
 Implementation in n dimension of the alpha shape using the Q-hull library

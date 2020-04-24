@@ -4,12 +4,12 @@
 \alias{in_convex_hull}
 \title{in convex hull}
 \usage{
-in_convex_hull(hull, points)
+in_convex_hull(hull = NULL, test_points = NULL)
 }
 \arguments{
-\item{hull}{object Convex hull simplices produced using convex function}
+\item{points}{points to make convex hull}
 
-\item{points:}{dataframe or matrix  \code{n}-by-\code{dim} of points to check.}
+\item{test_points:}{dataframe or matrix  \code{n}-by-\code{dim} of points to check.}
 }
 \value{
 A \code{n*m} vector containing the result. True if a given point was inside the convexhull , otherwise false
@@ -19,11 +19,13 @@ To test if a given point is inside the convex hull. \code{TRUE}  if the point  l
 lies outwith the hull
 }
 \examples{
-x = c(30,70,20,50,40,70)
-y = c(35,80,70,50,60,20)
-p =data.frame(x,y)
-convex =in_convex_hull(point=p)
-#point to check
-p2 = data.frame(x,y)
-in_convex_hull(convex,p2)
+# Define points to create the convex hull
+x <- c(30, 70, 20, 50, 40, 70)
+y <- c(35, 80, 70, 50, 60, 20)
+p <- data.frame(x, y)
+ch <- convex_hull(points = p)
+# Check if some new points are in the convex hull
+new = data.frame(c(20, 50), c(20, 50))
+checks <- in_convex_hull(hull=ch, test_points = new)
+
 }

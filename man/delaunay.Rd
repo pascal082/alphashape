@@ -4,7 +4,7 @@
 \alias{delaunay}
 \title{Delaunay triangulation in N-dimensions.}
 \usage{
-delaunay(point = NULL, options = NULL, full = FALSE)
+delaunay(points = NULL)
 }
 \arguments{
 \item{point}{\code{point} is an \code{n}-by-\code{dim} dataframevor matrix. The rows of
@@ -24,9 +24,11 @@ The Delaunay triangulation is a tessellation of the convex hull of the points su
 contains any other points from the set. This function calculates the Delaunay triangulation  in N-dimensions using the qhull library
 }
 \examples{
-# define point
-x = c(30,70,20,50,40,70)
-y = c(35,80,70,50,60,20)
-p = data.frame(x,y)
-delaunay =delaunay(point=p)
+# Define points
+x <- c(30, 70, 20, 50, 40, 70)
+y <- c(35, 80, 70, 50, 60, 20)
+p <- data.frame(x, y)
+# Create Delaunay triangulation and plot
+dt <- delaunay(points = p)
+plot(p, pch = as.character(seq(nrow(p))))
 }
