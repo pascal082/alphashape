@@ -23,7 +23,7 @@ find_simplex <- function(tri,inputPoint,testPoint) {
  
   #Identify the simplicies that each grid point belongs 
   #First this is done by first computing the convex hull and testing if each of the grid points lies in the hull
-  hull <- convex_hull(point = inputPoint)
+  hull <- convex_hull(points = inputPoint)
   
   #grid points in convex hull
   inHull = in_convex_hull(hull, testPoint)

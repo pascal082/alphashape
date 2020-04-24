@@ -62,23 +62,21 @@ voronoi <- function(points=NULL) {
   	vd <- .Call("C_voronoiR", points, options, tmpdir, PACKAGE="alphashape")
     # Re-index from C numbering to R numbering
     vd$tri[is.na(vd$tri)] <- 0
-    tri = vd$tri + 1
+    tri <- vd$tri + 1
     
     # Create list to return the desired Voronoi diagram information
-    voronoi =list()
+    voronoi = list()
     voronoi$tri = tri
 	  if (nrow(voronoi$tri) == 1) 
 	  {		
 	    voronoi$neighbours <- NULL
 	    voronoi$voronoi_vertices <- NULL
 	    voronoi$circumradii <- NULL
-	    voronoi$tri <- NULL
 	    
 	  }else{
 	    voronoi$neighbours <- vd$neighbours
 	    voronoi$voronoi_vertices <- vd$voronoi_vertices
-	    voronoi$circumradii <- vd$circumradii
-	    voronoi$tri <- vd$tri
+	    voronoi$circumradii <- vd$circumRadii
 	  }
 	  voronoi$input_points <- points
 
