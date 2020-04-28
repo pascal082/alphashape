@@ -81,7 +81,7 @@ alpha_complex <- function(points=NULL, alpha=NULL) {
     alpha_complex <- list()
     in_alpha_complex <- vd$circumRadii <= alpha
     
-    alpha_complex$tri <- tri[in_alpha_complex]
+    alpha_complex$tri <- tri[in_alpha_complex, ]
     
     if (nrow(alpha_complex$tri) < 1) {
 	    alpha_complex$circumcentres <- NULL
