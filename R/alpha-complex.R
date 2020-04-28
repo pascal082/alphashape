@@ -28,8 +28,14 @@
 #' y <- c(35, 80, 70, 50, 60, 20)
 #' p <- data.frame(x, y)
 #' # Create alpha complex and plot
-#' alpha_complex <- voronoi(points = p)
+#' a_complex <- alpha_complex(points = p, alpha = 20)
 #' plot(p, pch = as.character(seq(nrow(p))))
+#' for (s in seq(nrow(a_complex$simplices))) {
+#'   polygon(a_complex$input_points[a_complex$simplices[s,],], border="red")
+#'   text(x=colMeans(a_complex$input_points[a_complex$simplices[s,],])[1],
+#'        y=colMeans(a_complex$input_points[a_complex$simplices[s,],])[2],
+#'        labels=s, col="red")
+#' }
 #' @export
 alpha_complex <- function(points=NULL, alpha=NULL) {
 	
