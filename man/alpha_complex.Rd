@@ -11,11 +11,9 @@ alpha_complex(points = NULL, alpha = Inf)
 represent \eqn{n} points and the \eqn{d} columns the coordinates in 
 \eqn{d}-dimensional space.}
 
-\item{alpha}{a real number \eqn{0 \leq alpha \leq \infty} that defines the maximum 
-circumradii for a 
-simplex to be included in the alpha complex.  If unspecified, \code{alpha} 
-defaults to infinity and all simplicies are included in an alpha complex 
-that is equaivalent that produced by the \code{\link{delaunay}} function.}
+\item{alpha}{a real number between zero and infinity that defines the maximum 
+circumradii for a simplex to be included in the alpha complex.  If 
+unspecified \code{alpha} defaults to infinity.}
 }
 \value{
 Returns a list consisting of: [1] a \eqn{s}-by-\eqn{d+1} matrix of 
@@ -51,4 +49,7 @@ symbols(a_complex$circumcentres, circles = a_complex$circumradii,
 Barber CB, Dobkin DP, Huhdanpaa H (1996) The Quickhull algorithm 
 for convex hulls. ACM Transactions on Mathematical Software, 22(4):469-83 
 \url{https://doi.org/10.1145/235815.235821}.
+Edelsbrunner H, Mücke EP (1994) Three-dimensional alpha shapes. ACM 
+Transactions on Graphics, 13(1):43-72 
+\url{https://dl.acm.org/doi/abs/10.1145/174462.156635}.
 }
