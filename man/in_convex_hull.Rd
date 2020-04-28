@@ -29,9 +29,9 @@ x <- c(30, 70, 20, 50, 40, 70)
 y <- c(35, 80, 70, 50, 60, 20)
 p <- data.frame(x, y)
 ch <- convex_hull(points = p)
-# Check if some new points are in the convex hull
-new <- data.frame(c(20, 50), c(20, 50))
-checks <- in_convex_hull(hull = ch, test_points = new)
+# Check if some test points are in the convex hull
+p_test <- data.frame(c(20, 50), c(20, 50), c(60, 60))
+checks <- in_convex_hull(hull = ch, test_points = p_test)
 
 }
 \references{

@@ -1,19 +1,29 @@
-
-##' @title Find Simplex
-##' @description Returns the simplicies of the delaunay trigulation which contains a given point.
-##' @param tri delaunay trigulation simplex using \code{\link{delaunay}}
-##' @param testPoint  \code{n}-by-\code{dim} dataframe of points or matrix to check.  
-##' @param inputPoint  \code{n}-by-\code{dim} dataframe or matrix of original inputPoint. 
-##' @details Given a grid point and a test point point, the find Simplex will identify the simplicies contianing the test point. 
-##' It works by first checking for all point inside a convex hull, and then check if the center of the grid cell is inside the trigulation
-##' @return A \code{n*m} vector containing the result. -1  if a given point is outside the trigulation, or the trigulation index if the center of the cell is inside the alpha shape
-##' @examples 
-##'  x = c(30,70,20,50,40,70)
-##'  y = c(35,80,70,50,60,20)
-##'  p = data.frame(x,y)
-##'  v=voronoi(point =p)
-##'  meshGrdiSpace = grid_coordinates(mins=c(15,0), maxs=c(35,200), nCoords=5)
-##'  simplex <- find_simplex(v$tri, v$inputPoints,meshGrdiSpace)
+#' @title Find simplex
+#' 
+#' @description Returns the simplicies of a Delaunay triangulation or alpha 
+#' complex that contain the given set of test points.
+#' 
+#' @param simplicies A Delaunay trigulation list object created by 
+#' \code{\link{delaunay}} or a alpha complex list object created by 
+#' \code{\link{alpha_complex}}.
+#' @param test_points a \eqn{n}-by-\eqn{d} dataframe or matrix. The rows
+#'   represent \eqn{n} points and the \eqn{d} columns the coordinates in 
+#'   \eqn{d}-dimensional space. 
+#' 
+#' @return A \eqn{n} length vector containing the index of the simplex the test 
+#' point is within, or a value of zero if a test point is not within any of the 
+#' simplicies.
+#' 
+#' @examples 
+#' # Define points and create a Delaunay triangulation
+#' x <- c(30, 70, 20, 50, 40, 70)
+#' y <- c(35, 80, 70, 50, 60, 20)
+#' p <- data.frame(x, y)
+#' dt <- delaunay(points = p)
+#' # Check which simplex the test points belong to
+#' p_test <- data.frame(c(20, 50), c(20, 50), c(60, 60))
+#' simplex <- find_simplex(simplicies = dt, test_points = p_test)
+#'  
 #' @export
 find_simplex <- function(tri,inputPoint,testPoint) {
   
