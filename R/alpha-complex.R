@@ -14,7 +14,7 @@
 #' @return Returns a list consisting of: [1] a \eqn{n}-by-\eqn{d+1} matrix of 
 #' point indices that define the 
 #' \href{https://en.wikipedia.org/wiki/Simplex}{simplices} that make up the
-#' alpha complex; [2] a list circumcentres for each simplex ; [3] a list of 
+#' alpha complex; [2] a matrix of circumcentres for each simplex ; [3] a list of 
 #' circumradii for each simplex; and [4] the input points used to create the 
 #' alpha complex.
 #' 
@@ -81,13 +81,13 @@ alpha_complex <- function(points=NULL, alpha=NULL) {
     alpha_complex <- list()
     in_alpha_complex <- vd$circumRadii <= alpha
     
-    alpha_complex$tri <- tri[in_alpha_complex, ]
+    alpha_complex$simplices <- tri[in_alpha_complex, ]
     
-    if (nrow(alpha_complex$tri) < 1) {
+    if (nrow(alpha_complex$simplices) < 1) {
 	    alpha_complex$circumcentres <- NULL
 	    alpha_complex$circumradii <- NULL
 	    } else {
-	    alpha_complex$circumcentres <- vd$voronoi_vertices[in_alpha_complex]
+	    alpha_complex$circumcentres <- vd$voronoi_vertices[in_alpha_complex,]
 	    alpha_complex$circumradii <- vd$circumRadii[in_alpha_complex]
 	  }
 	  alpha_complex$input_points <- points
