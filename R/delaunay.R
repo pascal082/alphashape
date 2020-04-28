@@ -9,8 +9,8 @@
 #'   represent \eqn{n} points and the \eqn{d} columns the coordinates in 
 #'   \eqn{d}-dimensional space.
 #'   
-#' @return Returns a list consisting of: [1] a \eqn{n}-by-\eqn{d+1} matrix of 
-#' point indices that define the 
+#' @return Returns a list consisting of: [1] a \eqn{s}-by-\eqn{d+1} matrix of 
+#' point indices that define the \eqn{s} 
 #' \href{https://en.wikipedia.org/wiki/Simplex}{simplices} that make up the
 #' Delaunay triangulation; [2] a list containing for each simplex the 
 #' neighbouring simplices; and [3] the input points used to create the Delaunay 
@@ -34,6 +34,7 @@
 #'        y=colMeans(dt$input_points[dt$simplices[s,],])[2],
 #'        labels=s, col="red")
 #' }
+#' 
 #' @export
   delaunay <- function(points=NULL) {
 	

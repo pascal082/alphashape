@@ -1,26 +1,30 @@
 #' @title Alpha complex
 #' 
 #' @description  This function calculates the 
-#' \href{https://en.wikipedia.org/wiki/Alpha_shape}{alpha complex} of a set
-#' of \eqn{n} points in \eqn{d}-dimensional space using the
+#' \href{https://en.wikipedia.org/wiki/Alpha_shape#Alpha_complex}{alpha complex} 
+#' of a set of \eqn{n} points in \eqn{d}-dimensional space using the
 #' \href{http://www.qhull.org}{Qhull} library.
 #' 
 #' @param points a \eqn{n}-by-\eqn{d} dataframe or matrix. The rows
 #'   represent \eqn{n} points and the \eqn{d} columns the coordinates in 
 #'   \eqn{d}-dimensional space.
-#' @param alpha a positive number that defines the maximum circumradii for a 
-#'   simplex to be included in the alpha complex.
+#' @param alpha a real number between zero and infinity that defines the maximum 
+#'   circumradii for a simplex to be included in the alpha complex.  If 
+#'   unspecified \code{alpha} defaults to infinity.
 #' 
-#' @return Returns a list consisting of: [1] a \eqn{n}-by-\eqn{d+1} matrix of 
-#' point indices that define the 
+#' @return Returns a list consisting of: [1] a \eqn{s}-by-\eqn{d+1} matrix of 
+#' point indices that define the \eqn{s} 
 #' \href{https://en.wikipedia.org/wiki/Simplex}{simplices} that make up the
-#' alpha complex; [2] a matrix of circumcentres for each simplex ; [3] a list of 
-#' circumradii for each simplex; and [4] the input points used to create the 
-#' alpha complex.
+#' alpha complex; [2] a \eqn{s}-by-\eqn{d} matrix of circumcentres for each 
+#' simplex ; [3] a list of \eqn{s} circumradii for each simplex; and [4] the 
+#' input points used to create the alpha complex.
 #' 
 #' @references Barber CB, Dobkin DP, Huhdanpaa H (1996) The Quickhull algorithm 
 #' for convex hulls. ACM Transactions on Mathematical Software, 22(4):469-83 
 #' \url{https://doi.org/10.1145/235815.235821}.
+#' Edelsbrunner H, Mücke EP (1994) Three-dimensional alpha shapes. ACM 
+#' Transactions on Graphics, 13(1):43-72 
+#' \url{https://dl.acm.org/doi/abs/10.1145/174462.156635}.
 #' 
 #' @examples 
 #' # Define points
@@ -29,15 +33,16 @@
 #' p <- data.frame(x, y)
 #' # Create alpha complex and plot
 #' a_complex <- alpha_complex(points = p, alpha = 20)
-#' plot(p, pch = as.character(seq(nrow(p))))
+#' plot(p, pch = as.character(seq(nrow(p))), xlim=c(0,80), ylim=c(10,90), asp=1)
 #' for (s in seq(nrow(a_complex$simplices))) {
 #'   polygon(a_complex$input_points[a_complex$simplices[s,],], border="red")
-#'   text(x=colMeans(a_complex$input_points[a_complex$simplices[s,],])[1],
-#'        y=colMeans(a_complex$input_points[a_complex$simplices[s,],])[2],
-#'        labels=s, col="red")
 #' }
+#' text(a_complex$circumcentres, labels=seq(nrow(a_complex$simplices)), col="blue")
+#' symbols(a_complex$circumcentres, circles = a_complex$circumradii, 
+#'         inches = FALSE, add = TRUE, fg="blue", lty="dotted")
+#' 
 #' @export
-alpha_complex <- function(points=NULL, alpha=NULL) {
+alpha_complex <- function(points=NULL, alpha=Inf) {
 	
     # Check directory writable
     tmpdir <- tempdir()

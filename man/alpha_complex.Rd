@@ -4,28 +4,31 @@
 \alias{alpha_complex}
 \title{Alpha complex}
 \usage{
-alpha_complex(points = NULL, alpha = NULL)
+alpha_complex(points = NULL, alpha = Inf)
 }
 \arguments{
 \item{points}{a \eqn{n}-by-\eqn{d} dataframe or matrix. The rows
 represent \eqn{n} points and the \eqn{d} columns the coordinates in 
 \eqn{d}-dimensional space.}
 
-\item{alpha}{a positive number that defines the maximum circumradii for a 
-simplex to be included in the alpha complex.}
+\item{alpha}{a real number \eqn{0 \leq alpha \leq \infty} that defines the maximum 
+circumradii for a 
+simplex to be included in the alpha complex.  If unspecified, \code{alpha} 
+defaults to infinity and all simplicies are included in an alpha complex 
+that is equaivalent that produced by the \code{\link{delaunay}} function.}
 }
 \value{
-Returns a list consisting of: [1] a \eqn{n}-by-\eqn{d+1} matrix of 
-point indices that define the 
+Returns a list consisting of: [1] a \eqn{s}-by-\eqn{d+1} matrix of 
+point indices that define the \eqn{s} 
 \href{https://en.wikipedia.org/wiki/Simplex}{simplices} that make up the
-alpha complex; [2] a list circumcentres for each simplex ; [3] a list of 
-circumradii for each simplex; and [4] the input points used to create the 
-alpha complex.
+alpha complex; [2] a \eqn{s}-by-\eqn{d} matrix of circumcentres for each 
+simplex ; [3] a list of \eqn{s} circumradii for each simplex; and [4] the 
+input points used to create the alpha complex.
 }
 \description{
 This function calculates the 
-\href{https://en.wikipedia.org/wiki/Alpha_shape}{alpha complex} of a set
-of \eqn{n} points in \eqn{d}-dimensional space using the
+\href{https://en.wikipedia.org/wiki/Alpha_shape#Alpha_complex}{alpha complex} 
+of a set of \eqn{n} points in \eqn{d}-dimensional space using the
 \href{http://www.qhull.org}{Qhull} library.
 }
 \examples{
@@ -35,13 +38,14 @@ y <- c(35, 80, 70, 50, 60, 20)
 p <- data.frame(x, y)
 # Create alpha complex and plot
 a_complex <- alpha_complex(points = p, alpha = 20)
-plot(p, pch = as.character(seq(nrow(p))))
+plot(p, pch = as.character(seq(nrow(p))), xlim=c(0,80), ylim=c(10,90), asp=1)
 for (s in seq(nrow(a_complex$simplices))) {
   polygon(a_complex$input_points[a_complex$simplices[s,],], border="red")
-  text(x=colMeans(a_complex$input_points[a_complex$simplices[s,],])[1],
-       y=colMeans(a_complex$input_points[a_complex$simplices[s,],])[2],
-       labels=s, col="red")
 }
+text(a_complex$circumcentres, labels=seq(nrow(a_complex$simplices)), col="blue")
+symbols(a_complex$circumcentres, circles = a_complex$circumradii, 
+        inches = FALSE, add = TRUE, fg="blue", lty="dotted")
+
 }
 \references{
 Barber CB, Dobkin DP, Huhdanpaa H (1996) The Quickhull algorithm 
