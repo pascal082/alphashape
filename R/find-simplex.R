@@ -21,7 +21,7 @@
 #' p <- data.frame(x, y)
 #' dt <- delaunay(points = p)
 #' # Check which simplex the test points belong to
-#' p_test <- data.frame(c(20, 50), c(20, 50), c(60, 60))
+#' p_test <- data.frame(c(20, 50, 60), c(20, 50, 60))
 #' simplex <- find_simplex(simplicies = dt, test_points = p_test)
 #'  
 #' @export

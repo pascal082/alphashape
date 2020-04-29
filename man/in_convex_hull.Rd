@@ -30,7 +30,7 @@ y <- c(35, 80, 70, 50, 60, 20)
 p <- data.frame(x, y)
 ch <- convex_hull(points = p)
 # Check if some test points are in the convex hull
-p_test <- data.frame(c(20, 50), c(20, 50), c(60, 60))
+p_test <- data.frame(c(20, 50, 60), c(20, 50, 60))
 checks <- in_convex_hull(hull = ch, test_points = p_test)
 
 }
