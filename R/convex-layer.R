@@ -25,80 +25,42 @@
 #' \url{https://doi.org/10.1145/235815.235821}.
 #' 
 #' @examples
-#' # Define points
-#' x <- rnorm(50)
-#' y <- rnorm(50)
+#' # Create some random example data
+#' set.seed(1) # to reproduce figure exactly
+#' x = 20 + rgamma(n = 100, shape = 3, scale = 2)
+#' y = rnorm(n = 100, mean = 280, sd = 30)
 #' p <- data.frame(x, y)
-#' # Create convex layer and plot
-#' cl <- convex_layer(points = p, layer = 3)
-#' plot(p, pch = as.character(seq(nrow(p))))
-#' polygon(cl$hull_points, border = "red")
+#' plot(p)
+#' cols <- c("red", "blue", "orange", "lightseagreen", "purple")
+#' for (i in seq(5)) {
+#'   cl <- convex_layer(points = p, layer = i)
+#'   for (e in seq(nrow(cl$hull_edges))) {
+#'     lines(cl$input_points[cl$hull_edges[e, ], ], col = cols[i], lwd = 2)
+#'   }
+#' }
+#' legend("topright", legend = seq(5), lwd = 2, col = cols, bty = "n",
+#'        title = "Convex layers")
 #' 
 #' @export
   convex_layer <- function(points = NULL, layer = 1) {
     
-  	# Check directory writable
-  	tmpdir <- tempdir()
-  	# R should guarantee the tmpdir is writable, but check in any case
-  	if (file.access(tmpdir, 2) == -1) {
-  		stop(paste("Unable to write to R temporary directory", tmpdir, "\n"))
-  	}
-  	
-    # Coerce the input to be matrix
-    if(is.null(points)){
-      stop(paste("points must be an n-by-d dataframe or matrix", "\n"))
-    }
-    if(!is.data.frame(points) & !is.matrix(points)){
-      stop(paste("points must be a dataframe or matrix", "\n"))
-    }
-    if (is.data.frame(points)) {
-      points <- as.matrix(points)
-    }
-    # Make sure we have real-valued input
-    storage.mode(points) <- "double"
-    # We need to check for NAs in the input, as these will crash the C code.
-    if (any(is.na(points))) {
-      stop("points should not contain any NAs")
-    }
-  	
-  	# Specify the Qhull options: http://www.qhull.org/html/qh-optq.htm
-  	options <- "Qt"
-	
-    for (i in seq(layer)) {
+    # Iteratively create convex hull and remove points to specified convex layer
+  	for (i in seq(layer)) {
       if (i == 1) {
-        layerpoints <- points
-        # Call C function to create the convex hull
-      	ch <- .Call("C_convex", layerpoints, options, tmpdir, PACKAGE="alphashape")
-      	# Re-index from C numbering to R numbering
-      	ch$convex_hull[is.na(ch$convex_hull)] <- 0
-      	edges <- as.data.frame(ch$convex_hull + 1)
-      	indicies <- unique(c(as.integer(ch$convex_hull + 1)))
-      	if (layer == 1) {
-        	# Create list to return the desired convex hull information
-        	convex <- list()
-        	convex$hull_edges <- as.matrix(edges)
-        	convex$hull_indices <- indicies
-        	convex$hull_points <- layerpoints[convex$hull_indices,]
-        	convex$input_points <- points
+        ch <- convex_hull(points)
+        if (i == layer) {
+          return(ch)
+      	} else {
+      	  next_points <- points[-ch$hull_indices,]
       	}
       } else {
-        layerpoints <- layerpoints[-indicies,]
-        # Call C function to create the convex hull
-      	ch <- .Call("C_convex", layerpoints, options, tmpdir, PACKAGE="alphashape")
-      	# Re-index from C numbering to R numbering
-      	ch$convex_hull[is.na(ch$convex_hull)] <- 0
-      	edges <- as.data.frame(ch$convex_hull + 1)
-      	indicies <- unique(c(as.integer(ch$convex_hull + 1)))
-      	if (i == layer) {
-        	# Create list to return the desired convex hull information
-        	convex <- list()
-        	convex$hull_edges <- as.matrix(edges)
-        	convex$hull_indices <- indicies
-        	convex$hull_points <- layerpoints[convex$hull_indices,]
-        	convex$input_points <- points
+        ch <- convex_hull(next_points)
+        if (i == layer) {
+      	  return(ch)
+      	} else {
+      	  next_points <- next_points[-ch$hull_indices,]
       	}
       }
     }
-  	return(convex)
   }
  

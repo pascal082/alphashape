@@ -29,7 +29,9 @@
 #' # Create convex hull and plot
 #' ch <- convex_hull(points = p)
 #' plot(p, pch = as.character(seq(nrow(p))))
-#' polygon(ch$hull_points, border = "red")
+#' for (e in seq(nrow(ch$hull_edges))) {
+#'   lines(ch$input_points[ch$hull_edges[e, ], ], col = "red")
+#' }
 #' 
 #' @export
   convex_hull <- function(points=NULL) {
