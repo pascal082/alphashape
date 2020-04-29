@@ -29,14 +29,21 @@ depth from a set of \eqn{n} points in \eqn{d}-dimensional space using the
 \href{http://www.qhull.org}{Qhull} library.
 }
 \examples{
-# Define points
-x <- rnorm(50)
-y <- rnorm(50)
+# Create some random example data
+set.seed(1) # to reproduce figure exactly
+x = 20 + rgamma(n = 100, shape = 3, scale = 2)
+y = rnorm(n = 100, mean = 280, sd = 30)
 p <- data.frame(x, y)
-# Create convex layer and plot
-cl <- convex_layer(points = p, layer = 3)
-plot(p, pch = as.character(seq(nrow(p))))
-polygon(cl$hull_points, border = "red")
+plot(p)
+cols <- c("red", "blue", "orange", "lightseagreen", "purple")
+for (i in seq(5)) {
+  cl <- convex_layer(points = p, layer = i)
+  for (e in seq(nrow(cl$hull_edges))) {
+    lines(cl$input_points[cl$hull_edges[e, ], ], col = cols[i], lwd = 2)
+  }
+}
+legend("topright", legend = seq(5), lwd = 2, col = cols, bty = "n",
+       title = "Convex layers")
 
 }
 \references{
