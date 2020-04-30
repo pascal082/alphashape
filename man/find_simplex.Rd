@@ -4,7 +4,7 @@
 \alias{find_simplex}
 \title{Find simplex}
 \usage{
-find_simplex(tri, inputPoint, testPoint)
+find_simplex(simplicies, test_points)
 }
 \arguments{
 \item{simplicies}{A Delaunay trigulation list object created by 
@@ -29,9 +29,9 @@ complex that contain the given set of test points.
 x <- c(30, 70, 20, 50, 40, 70)
 y <- c(35, 80, 70, 50, 60, 20)
 p <- data.frame(x, y)
-dt <- delaunay(points = p)
+a_complex <- alpha_complex(points = p, alpha = 20)
 # Check which simplex the test points belong to
 p_test <- data.frame(c(20, 50, 60), c(20, 50, 60))
-simplex <- find_simplex(simplicies = dt, test_points = p_test)
+simplex <- find_simplex(simplicies = a_complex, test_points = p_test)
  
 }
