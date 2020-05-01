@@ -9,7 +9,7 @@ find_simplex(simplicies, test_points)
 \arguments{
 \item{simplicies}{A Delaunay trigulation list object created by 
 \code{\link{delaunay}} or a alpha complex list object created by 
-\code{\link{alpha_complex} that contain simplicies}.}
+\code{\link{alpha_complex}} that contain simplicies.}
 
 \item{test_points}{a \eqn{n}-by-\eqn{d} dataframe or matrix. The rows
 represent \eqn{n} points and the \eqn{d} columns the coordinates in 
@@ -31,7 +31,18 @@ y <- c(35, 80, 70, 50, 60, 20)
 p <- data.frame(x, y)
 a_complex <- alpha_complex(points = p, alpha = 20)
 # Check which simplex the test points belong to
-p_test <- data.frame(c(20, 50, 60), c(20, 50, 60))
-simplex <- find_simplex(simplicies = a_complex, test_points = p_test)
- 
+p_test <- data.frame(c(20, 50, 60, 40), c(20, 60, 60, 50))
+p_test_simplex <- find_simplex(simplicies = a_complex, test_points = p_test)
+plot(p, pch = as.character(seq(nrow(p))), xlim=c(0,90))
+for (s in seq(nrow(a_complex$simplices))) {
+  polygon(a_complex$input_points[a_complex$simplices[s,],], border="red")
+  text(x=colMeans(a_complex$input_points[a_complex$simplices[s,],])[1],
+       y=colMeans(a_complex$input_points[a_complex$simplices[s,],])[2],
+       labels=s, col="red")
+}
+points(p_test[,1], p_test[,2], pch=c("1", "2", "3", "4"), col="blue")
+legend("topright", legend = c("input points", "simplicies", "test points"), 
+       text.col=c("black", "red", "blue"), title = "Indicies for:", bty="n")
+print(p_test_simplex)
+
 }
