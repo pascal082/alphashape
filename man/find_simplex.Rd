@@ -9,7 +9,7 @@ find_simplex(simplicies, test_points)
 \arguments{
 \item{simplicies}{A Delaunay trigulation list object created by 
 \code{\link{delaunay}} or a alpha complex list object created by 
-\code{\link{alpha_complex}}.}
+\code{\link{alpha_complex} that contain simplicies}.}
 
 \item{test_points}{a \eqn{n}-by-\eqn{d} dataframe or matrix. The rows
 represent \eqn{n} points and the \eqn{d} columns the coordinates in 
@@ -17,7 +17,7 @@ represent \eqn{n} points and the \eqn{d} columns the coordinates in
 }
 \value{
 A \eqn{n} length vector containing the index of the simplex the test 
-point is within, or a value of zero if a test point is not within any of the 
+point is within, or a value of NA if a test point is not within any of the 
 simplicies.
 }
 \description{

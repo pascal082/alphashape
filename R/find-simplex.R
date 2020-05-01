@@ -5,7 +5,7 @@
 #' 
 #' @param simplicies A Delaunay trigulation list object created by 
 #' \code{\link{delaunay}} or a alpha complex list object created by 
-#' \code{\link{alpha_complex}}.
+#' \code{\link{alpha_complex} that contain simplicies}.
 #' @param test_points a \eqn{n}-by-\eqn{d} dataframe or matrix. The rows
 #'   represent \eqn{n} points and the \eqn{d} columns the coordinates in 
 #'   \eqn{d}-dimensional space. 
@@ -47,63 +47,41 @@ find_simplex <- function(simplicies, test_points) {
   test_points_simplex <- NULL
   
   # For each test point that is within the convex hull
-  for (j in c(1:nrow(test_points))) {
+  for (p in c(1:nrow(test_points))) {
     if (inHull[j] == TRUE) {
-      k <- 1;
       
-      # Loop over the tri
-      for(i in c(1:length(simplicies$simplices[, 1]))) {
+      # Loop over the simplicies
+      for(s in c(1:nrow(simplicies$simplices))) {
         
-        # Get the point which makes the simplex
-        p1 <- simplicies$simplices[k, ]
-       
-        tri_point <- simplicies$input_points[p1, ]
-        
-        
-        #get the baycentric of this point
-        by_point = rbind(c(test_points[j,]))
-        
-        barycentric_coordinates_point <- get_ny_centri_coordinate(tri_point,by_point)
-        
-        # The point is inside the triangle if the sum of the 
-        # barycentricoordinate = 1 and and are all positive
-        
-        # Check if the barycentri coordinate are all positive
-        check_sign <- sign(barycentric_coordinates_point[1, ])
-        
-        
-        # Check if any of the barycentric coordinates are zero
-        zero_ny_centri_coordinate <- barycentric_coordinates_point[1, ] == 0
-        
-        # Next, sum all  barycentric coordinates and if == 1
-        sum_ny_centri_coordinate = rowSums(barycentric_coordinates_point)
-        
-        # If one or two barycentric coordinates are zero the point lies on the 
-        # corresponding one or two edges of the element or if all are positive 
-        # the point is inside.
+        # Get the coordinates of the points that make the simplex
+        simplex_indicies <- simplicies$simplices[s, ]
+        simplex_coordinates <- simplicies$input_points[simplex_indicies, ]
 
-        if (length(which(check_sign == -1)) == 0 ) {
-          test_points_simplex[j] <- i
-          break    # point is inside the triangle, so break
-        } 
-        else
-          test_points_simplex[j] = NA # test point is not in a simplex
+        # Get the barycentric coordinate of the test point for the simplex
+        test_barycentric <- barycentric_coordinate(simplex_coordinates, test_points[p, ])
         
-        k <- k + 1
-        
+        # The point is inside the triangle all of the barycentric coordinates 
+        # are positive
+        check_sign <- sign(test_barycentric[1, ])
+        if (length(which(check_sign == -1)) == 0) {
+          test_points_simplex[p] <- s
+          break    # the test point is inside this simplex so stop searching
+        } else {
+          test_points_simplex[p] = NA # test point is not in a simplex
+        }
       }
       
-    }
-    else {
-      test_points_simplex[j] = NA # test point is not in a simplex
+    } else {
+      test_points_simplex[p] = NA # test point is not in a simplex
     }
   }
   return (test_points_simplex)
-  #return(.Call("C_findSimplex", hull$convexhull, test_pointss, PACKAGE="alphashape"))
+  #return(.Call("C_findSimplex", hull$convexhull, test_points, PACKAGE="alphashape"))
 }
 
-# Internal function used by \code{\link{find_simplex}} to calculate the bycentri co-ordinate
-get_ny_centri_coordinate <- function(X, P) {
+# Internal function used by \code{\link{find_simplex}} to calculate the 
+# barycentric coordinate of a point in relation to a simplex
+barycentric_coordinate <- function(X, P) {
   M <- nrow(P)
   N <- ncol(P)
   if (ncol(X) != N) {
@@ -121,4 +99,3 @@ get_ny_centri_coordinate <- function(X, P) {
   Beta <- cbind(Beta, 1 - apply(Beta, 1, sum))
   return(Beta)
 }
-
