@@ -58,7 +58,8 @@ find_simplex <- function(simplicies, test_points) {
         simplex_coordinates <- simplicies$input_points[simplex_indicies, ]
 
         # Get the barycentric coordinate of the test point for the simplex
-        test_barycentric <- barycentric_coordinate(simplex_coordinates, test_points[p, ])
+        tp = rbind(c(test_points[p,]))
+        test_barycentric <- barycentric_coordinate(simplex_coordinates, tp)
         
         # The point is inside the triangle all of the barycentric coordinates 
         # are positive
