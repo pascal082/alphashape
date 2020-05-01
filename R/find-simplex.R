@@ -48,7 +48,7 @@ find_simplex <- function(simplicies, test_points) {
   
   # For each test point that is within the convex hull
   for (p in c(1:nrow(test_points))) {
-    if (inHull[j] == TRUE) {
+    if (inHull[p] == TRUE) {
       
       # Loop over the simplicies
       for(s in c(1:nrow(simplicies$simplices))) {
