@@ -20,8 +20,8 @@
 #' x <- c(30, 70, 20, 50, 40, 70)
 #' y <- c(35, 80, 70, 50, 60, 20)
 #' p <- data.frame(x, y)
-#' # Create Voronoi diagram and plot
 #' vd <- voronoi(points = p)
+#' # Create Voronoi diagram and plot
 #' plot(p, pch = as.character(seq(nrow(p))))
 #' @export
 voronoi <- function(points=NULL) {
@@ -71,12 +71,14 @@ voronoi <- function(points=NULL) {
 	  {		
 	    voronoi$neighbours <- NULL
 	    voronoi$voronoi_vertices <- NULL
+	    voronoi$voronoi_regions <- NULL
 	    voronoi$circumradii <- NULL
 	    
 	  }else{
 	    voronoi$neighbours <- vd$neighbours
 	    voronoi$voronoi_vertices <- vd$voronoi_vertices
 	    voronoi$circumradii <- vd$circumRadii
+	    voronoi$voronoi_regions <- vd$voronoi_regions
 	  }
 	  voronoi$input_points <- points
 
