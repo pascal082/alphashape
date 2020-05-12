@@ -14,13 +14,12 @@
 #' @references Barber CB, Dobkin DP, Huhdanpaa H (1996) The Quickhull algorithm 
 #' for convex hulls. ACM Transactions on Mathematical Software, 22(4):469-83 
 #' \url{https://doi.org/10.1145/235815.235821}.
-#' 
 #' @examples 
 #' # Define points
 #' x <- c(30, 70, 20, 50, 40, 70)
 #' y <- c(35, 80, 70, 50, 60, 20)
 #' p <- data.frame(x, y)
-#' vd <- voronoi(points = p)
+# vd <- voronoi(points = p)
 #' # Create Voronoi diagram and plot
 #' plot(p, pch = as.character(seq(nrow(p))))
 #' @export
@@ -73,12 +72,13 @@ voronoi <- function(points=NULL) {
 	    voronoi$voronoi_vertices <- NULL
 	    voronoi$voronoi_regions <- NULL
 	    voronoi$circumradii <- NULL
-	    
+	    voronoi$point_regions <- NULL
 	  }else{
 	    voronoi$neighbours <- vd$neighbours
 	    voronoi$voronoi_vertices <- vd$voronoi_vertices
 	    voronoi$circumradii <- vd$circumRadii
 	    voronoi$voronoi_regions <- vd$voronoi_regions
+	    voronoi$point_regions <- vd$point_regions
 	  }
 	  voronoi$input_points <- points
 

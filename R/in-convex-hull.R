@@ -28,7 +28,6 @@
 #' # Check if some test points are in the convex hull
 #' p_test <- data.frame(c(20, 50, 60), c(20, 50, 60))
 #' checks <- in_convex_hull(hull = ch, test_points = p_test)
-#' 
 #' @export in_convex_hull
   in_convex_hull <- function(hull=NULL, test_points=NULL) {
   

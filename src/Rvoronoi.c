@@ -25,11 +25,11 @@
 SEXP C_voronoiR(const SEXP p, const SEXP options, SEXP tmpdir)
 {
 	  SEXP retlist, retnames;       /* Return list and names */
-	  int retlen = 6;               /* Length of return list */
+	  int retlen = 7;               /* Length of return list */
 	  SEXP tri, circumRadii;         /* The triangulation, array of circumradii */
 	  SEXP neighbour, neighbours;   /* List of neighbours */
     SEXP voronoiRegion, voronoiRegions; /*voronoi region */
-	  SEXP voronoiVertices,point0 ;   /* voronoi vertices and  */
+	  SEXP voronoiVertices,point0,pointRegion, pointRegions ;   /* voronoi vertices and  */
 	  int i, j;
 	  unsigned dim, n, simpliexDim, simplexRow,nk;
 	  int exitcode = 1;
@@ -39,7 +39,7 @@ SEXP C_voronoiR(const SEXP p, const SEXP options, SEXP tmpdir)
 
 
   /* Initialise return values */
-	tri = voronoiVertices = point0=retlist=circumRadii =voronoiRegions= R_NilValue;
+	tri = voronoiVertices = point0=retlist=circumRadii =voronoiRegions=pointRegions = R_NilValue;
 
   /* We cannot print directly to stdout in R, and the alternative of
      using R_Outputfile does not seem to work for all
@@ -105,7 +105,8 @@ SEXP C_voronoiR(const SEXP p, const SEXP options, SEXP tmpdir)
     vertexT *vertex,  **vertexp;
     facetT *neighbor,  **neighborp;
     ridgeT *ridge, **ridgep;
-
+    pointT *point;
+    realT  dist;
     qh_option(qh,"voronoi  _bbound-last  _coplanar-keep", NULL, NULL);
     qh->DELAUNAY= True;     /* 'v'   */
     qh->VORONOI= True;
@@ -121,23 +122,44 @@ SEXP C_voronoiR(const SEXP p, const SEXP options, SEXP tmpdir)
         qh->MERGEexact= True; /* 'Qx' always */
      }
     
+    
+    
+    /* Count the number of facets so we know how much space to allocate in R */
+    int nf=0;                 /* Number of facets */
+    FORALLfacets {
+      if (!facet->upperdelaunay) {
+        nf++;
+      }
+      nk=nf;
+      /* Double check. Non-simplicial facets will cause segfault
+       below */
+      if (! facet->simplicial) {
+        Rprintf("Qhull returned non-simplicial facets -- try delaunayn with different options");
+        exitcode = 1;
+        break;
+      }
+    }
+    
     /* count the number of vertices region */
 
-    int nfo =qh->num_vertices - qh_setsize(qh, qh->del_vertices);;
-
+    int nfo =qh->num_vertices - qh_setsize(qh, qh->del_vertices);
+    int np= qh->num_points;  //number of region points 
+    /* *********************** Voronoi Regions ********************************************/
     /* Allocate the space in R */
-    //PROTECT(voronoiRegions = allocMatrix(INTSXP, nfo, dim));
     PROTECT(voronoiRegions = allocVector(VECSXP, nfo));
-   
-    
+    PROTECT(pointRegions = allocVector(INTSXP, np));
     qh_eachvoronoi_all(qh, errfile, printvridge, qh->UPPERdelaunay, innerouter, inorder);
     int t =0;
+    
+   
+    
     FORALLvertices {
       int site_id = qh_pointid (qh,vertex->point);
       if (qh->hull_dim == 3)
         qh_order_vertexneighbors(qh,vertex);
       int infinity_seen = 0;
       int j =0;
+      qh_order_vertexneighbors(qh,vertex);
       PROTECT(voronoiRegion = allocVector(INTSXP, qh_setsize(qh, vertex->neighbors)));
       FOREACHneighbor_(vertex){
         int n = neighbor->visitid;
@@ -152,37 +174,29 @@ SEXP C_voronoiR(const SEXP p, const SEXP options, SEXP tmpdir)
         j++;
       }
       SET_VECTOR_ELT(voronoiRegions, t, voronoiRegion);
+      INTEGER(pointRegions)[t] =LENGTH(voronoiRegions) -(LENGTH(voronoiRegions)+1);  // -1 for region without points
+      
+      int it = qh_pointid(qh, vertex->point);
+      int np_check =np -1;
+      if(it < np_check){
+        INTEGER(pointRegions)[t] = qh_pointid(qh, vertex->point)+1; 
+      }
       UNPROTECT(1);
       t++;
     }
-    
-    
-    
-    /* Count the number of facets so we know how much space to allocate in R */
-    int nf=0;                 /* Number of facets */
-    FORALLfacets {
-      if (!facet->upperdelaunay) {
-        nf++;
-      }
-      nk=nf;
-      /* Double check. Non-simplicial facets will cause segfault
-         below */
-      if (! facet->simplicial) {
-        Rprintf("Qhull returned non-simplicial facets -- try delaunayn with different options");
-        exitcode = 1;
-        break;
-      }
-    }
+    /* *******************************END Voronoi Regions ********************************************/
 
+    
+    /* Iterate through facets to extract information */
+    int i=0;
+   
+    
     /* Alocate the space in R */
     PROTECT(tri = allocMatrix(INTSXP, nf, dim+1));
     PROTECT(circumRadii = allocMatrix(REALSXP, nf, 1));
     PROTECT(neighbours = allocVector(VECSXP, nf));
     PROTECT(voronoiVertices= allocMatrix(REALSXP, nf, dim));
     PROTECT(point0= allocMatrix(REALSXP, nf, dim));
-
-    /* Iterate through facets to extract information */
-    int i=0;
     FORALLfacets {
 
       if (!facet->upperdelaunay) {
@@ -192,9 +206,38 @@ SEXP C_voronoiR(const SEXP p, const SEXP options, SEXP tmpdir)
 
 
 		 qh_eachvoronoi_all(qh, errfile, printvridge, qh->UPPERdelaunay, innerouter, inorder);
+    
+    /* ********************* Point Region *****************************************/
+    
+    /* region point */
 
-    /* Triangulation */
-    int j=0;
+      //PROTECT(pointRegion = allocVector(INTSXP, qh_setsize(qh, facet->coplanarset)));
+      
+      
+     
+      
+      int j =0;
+      if (facet->coplanarset){
+        
+        
+        //PROTECT(pointRegion = allocVector(INTSXP, qh_setsize(qh, facet->neighbors)));
+        for (int k=0; k < qh_setsize(qh, facet->coplanarset); k++){
+          point = (pointT*)facet->coplanarset->e[k].p;
+  
+          int t = qh_pointid(qh, point);
+          int jj = qh_pointid(qh, vertex->point);
+          int np_check =np -1;
+          if (t <  np_check){
+             INTEGER(pointRegions)[t] =  INTEGER(pointRegions)[jj];
+          }
+          j++;
+        }
+
+    }
+    /* *******************************END Point Region ********************************************/
+    
+
+    /* **************** Triangulation *************************************/
 
     if(qh->hull_dim ==3 && facet->toporient == qh_ORIENTclock)
 		{
@@ -254,27 +297,27 @@ SEXP C_voronoiR(const SEXP p, const SEXP options, SEXP tmpdir)
 
 		   }
 		}
+		/* **************** END Triangulation *************************************/
 
 
+    /* ***************************************Neighbours***************************** */
+    PROTECT(neighbour = allocVector(INTSXP, qh_setsize(qh, facet->neighbors)));
+    j=0;
+    FOREACHneighbor_(facet) {
 
-        /* Neighbours */
-        PROTECT(neighbour = allocVector(INTSXP, qh_setsize(qh, facet->neighbors)));
-        j=0;
-        FOREACHneighbor_(facet) {
+      INTEGER(neighbour)[j] = neighbor->visitid ? neighbor->visitid: 0 - neighbor->id;
+      
+     
+      j++;
+    }
+    SET_VECTOR_ELT(neighbours, i, neighbour);
+    UNPROTECT(1);
+    /* ***************************************End Neighbours***************************** */
+    
+    /* voronoi vertices */
+    int k, num;
 
-          INTEGER(neighbour)[j] = neighbor->visitid ? neighbor->visitid: 0 - neighbor->id;
-          
-         
-          j++;
-        }
-        SET_VECTOR_ELT(neighbours, i, neighbour);
-        UNPROTECT(1);
-
-
-        /* voronoi vertices */
-        int k, num;
-
-
+    
 		if (qh->CENTERtype == qh_ASvoronoi)
 		{
 			   num= qh->hull_dim-1;
@@ -289,8 +332,12 @@ SEXP C_voronoiR(const SEXP p, const SEXP options, SEXP tmpdir)
 
 						  REAL(voronoiVertices)[i + nf*k] = facet->center[k];
 					  }
-
-
+					 /* if (facet->visitid > 0){
+					    if(facet->coplanarset){
+					      
+					    }
+					 }*/
+					  
 			  }
 			  else
 			  {
@@ -353,16 +400,15 @@ SEXP C_voronoiR(const SEXP p, const SEXP options, SEXP tmpdir)
 			 }
 			 k++;
 	  }
-
+    /* ********************CIRCUMRADII ******************************************
 	  /* calculate the circum radii using the voronoi vertices and points containing the tringulation */
-
 	   double *radii = calculateradill(point0,voronoiVertices);
 	   for(int i=0; i<nrows(tri); i++)
 	   {
 
-			REAL(circumRadii)[i] = radii[i];
+			  REAL(circumRadii)[i] = radii[i];
 	   }
-
+     /* **************************************** END CIRCUMRADII ********************************/
 
   }
   else
@@ -375,6 +421,7 @@ SEXP C_voronoiR(const SEXP p, const SEXP options, SEXP tmpdir)
 		PROTECT(voronoiVertices = allocMatrix(REALSXP, 0, dim));
 		PROTECT(point0 = allocMatrix(REALSXP, 0, dim));
 		PROTECT(voronoiRegions = allocVector(VECSXP, 0));
+		PROTECT(pointRegions = allocVector(VECSXP, 0));
 
 
 		/* If the error been because the points are colinear, coplanar
@@ -400,10 +447,12 @@ SEXP C_voronoiR(const SEXP p, const SEXP options, SEXP tmpdir)
 	  SET_VECTOR_ELT(retnames, 4, mkChar("tri_points"));
 	  SET_VECTOR_ELT(retlist, 5, voronoiRegions);
 	  SET_VECTOR_ELT(retnames, 5, mkChar("voronoi_regions"));
+	  SET_VECTOR_ELT(retlist, 6, pointRegions);
+	  SET_VECTOR_ELT(retnames, 6, mkChar("point_regions"));
 	  
 
 	  setAttrib(retlist, R_NamesSymbol, retnames);
-	  UNPROTECT(8);
+	  UNPROTECT(9);
 
 	  /* Register qhullFinalizer() for garbage collection and attach a
 		 pointer to the hull as an attribute for future use. */
