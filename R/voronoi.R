@@ -62,23 +62,27 @@ voronoi <- function(points=NULL) {
     # Re-index from C numbering to R numbering
     vd$tri[is.na(vd$tri)] <- 0
     tri <- vd$tri + 1
-    
+    # Extract voronoi regions relating to an input point and put in point order
+    point_regions <- vd$point_regions
+    voronoi_regions <- vd$voronoi_regions
+    point_regions_data = point_regions[unlist(point_regions != -1)]
+    voronoi_regions_data = voronoi_regions[unlist(point_regions != -1)]
+    voronoi_regions_ordered = voronoi_regions_data[order(point_regions_data)]
+      
     # Create list to return the desired Voronoi diagram information
     voronoi <- list()
     voronoi$tri <- tri
-	  if (nrow(voronoi$tri) == 1) 
-	  {		
+	  if (nrow(voronoi$tri) == 1) {		
 	    voronoi$neighbours <- NULL
 	    voronoi$voronoi_vertices <- NULL
 	    voronoi$voronoi_regions <- NULL
 	    voronoi$circumradii <- NULL
 	    voronoi$point_regions <- NULL
-	  }else{
+	  } else {
 	    voronoi$neighbours <- vd$neighbours
 	    voronoi$voronoi_vertices <- vd$voronoi_vertices
 	    voronoi$circumradii <- vd$circumRadii
-	    voronoi$voronoi_regions <- vd$voronoi_regions
-	    voronoi$point_regions <- vd$point_regions
+	    voronoi$voronoi_regions <- voronoi_regions_ordered
 	  }
 	  voronoi$input_points <- points
 
