@@ -33,13 +33,6 @@
 #'     polygon(vd$voronoi_vertices[vd_region,], density=20, col = cols[r])
 #'   }
 #' }
-#' # Also plot Delaunay triangulation
-#' for (s in seq(nrow(vd$simplices))) {
-#'   polygon(vd$input_points[vd$simplices[s,],], border="black")
-#'   text(x=colMeans(vd$input_points[vd$simplices[s,],])[1],
-#'        y=colMeans(vd$input_points[vd$simplices[s,],])[2],
-#'        labels=s, col="red")
-#' }
 #' 
 #' @export
 voronoi <- function(points=NULL) {
