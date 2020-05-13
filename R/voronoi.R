@@ -91,7 +91,7 @@ voronoi <- function(points=NULL) {
     # Create list to return the desired Voronoi diagram information
     voronoi <- list()
     voronoi$simplices <- tri
-	  if (nrow(voronoi$tri) == 1) {	
+	  if (nrow(voronoi$simplices) == 1) {	
 	    voronoi$neighbours <- NULL
 	    voronoi$voronoi_vertices <- NULL
 	    voronoi$voronoi_regions <- NULL
