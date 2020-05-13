@@ -14,14 +14,33 @@
 #' @references Barber CB, Dobkin DP, Huhdanpaa H (1996) The Quickhull algorithm 
 #' for convex hulls. ACM Transactions on Mathematical Software, 22(4):469-83 
 #' \url{https://doi.org/10.1145/235815.235821}.
+#' 
 #' @examples 
 #' # Define points
-#' x <- c(30, 70, 20, 50, 40, 70)
-#' y <- c(35, 80, 70, 50, 60, 20)
+#' x <- c(30, 70, 20, 50, 40, 70, 20, 55, 30)
+#' y <- c(35, 80, 70, 50, 60, 20, 20, 55, 65)
 #' p <- data.frame(x, y)
-# vd <- voronoi(points = p)
 #' # Create Voronoi diagram and plot
-#' plot(p, pch = as.character(seq(nrow(p))))
+#' vd <- voronoi(points = p)
+#' cols = c("red", "blue", "green", "darkgrey", "purple", "lightseagreen",
+#'          "brown", "darkgreen", "orange")
+#' plot(vd$input_points, pch = as.character(seq(nrow(p))), col=cols,
+#'      xlim=c(0,100), ylim=c(0,100))
+#' r = 0
+#' for (vd_region in vd$voronoi_regions) {
+#'   r = r + 1
+#'   if (!0 %in% vd_region) {
+#'     polygon(vd$voronoi_vertices[vd_region,], density=20, col = cols[r])
+#'   }
+#' }
+#' # Also plot Delaunay triangulation
+#' for (s in seq(nrow(vd$simplices))) {
+#'   polygon(vd$input_points[vd$simplices[s,],], border="black")
+#'   text(x=colMeans(vd$input_points[vd$simplices[s,],])[1],
+#'        y=colMeans(vd$input_points[vd$simplices[s,],])[2],
+#'        labels=s, col="red")
+#' }
+#' 
 #' @export
 voronoi <- function(points=NULL) {
 	
@@ -71,17 +90,14 @@ voronoi <- function(points=NULL) {
       
     # Create list to return the desired Voronoi diagram information
     voronoi <- list()
-    voronoi$tri <- tri
-	  if (nrow(voronoi$tri) == 1) {		
+    voronoi$simplices <- tri
+	  if (nrow(voronoi$tri) == 1) {	
 	    voronoi$neighbours <- NULL
 	    voronoi$voronoi_vertices <- NULL
 	    voronoi$voronoi_regions <- NULL
-	    voronoi$circumradii <- NULL
-	    voronoi$point_regions <- NULL
 	  } else {
 	    voronoi$neighbours <- vd$neighbours
 	    voronoi$voronoi_vertices <- vd$voronoi_vertices
-	    voronoi$circumradii <- vd$circumRadii
 	    voronoi$voronoi_regions <- voronoi_regions_ordered
 	  }
 	  voronoi$input_points <- points

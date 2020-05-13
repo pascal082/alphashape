@@ -22,12 +22,30 @@ of \eqn{n} points in \eqn{d}-dimensional space using the
 }
 \examples{
 # Define points
-x <- c(30, 70, 20, 50, 40, 70)
-y <- c(35, 80, 70, 50, 60, 20)
+x <- c(30, 70, 20, 50, 40, 70, 20, 55, 30)
+y <- c(35, 80, 70, 50, 60, 20, 20, 55, 65)
 p <- data.frame(x, y)
 # Create Voronoi diagram and plot
 vd <- voronoi(points = p)
-plot(p, pch = as.character(seq(nrow(p))))
+cols = c("red", "blue", "green", "darkgrey", "purple", "lightseagreen",
+         "brown", "darkgreen", "orange")
+plot(vd$input_points, pch = as.character(seq(nrow(p))), col=cols,
+     xlim=c(0,100), ylim=c(0,100))
+r = 0
+for (vd_region in vd$voronoi_regions) {
+  r = r + 1
+  if (!0 \%in\% vd_region) {
+    polygon(vd$voronoi_vertices[vd_region,], density=20, col = cols[r])
+  }
+}
+# Also plot Delaunay triangulation
+for (s in seq(nrow(vd$simplices))) {
+  polygon(vd$input_points[vd$simplices[s,],], border="black")
+  text(x=colMeans(vd$input_points[vd$simplices[s,],])[1],
+       y=colMeans(vd$input_points[vd$simplices[s,],])[2],
+       labels=s, col="red")
+}
+
 }
 \references{
 Barber CB, Dobkin DP, Huhdanpaa H (1996) The Quickhull algorithm 

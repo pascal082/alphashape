@@ -32,7 +32,6 @@ ch <- convex_hull(points = p)
 # Check if some test points are in the convex hull
 p_test <- data.frame(c(20, 50, 60), c(20, 50, 60))
 checks <- in_convex_hull(hull = ch, test_points = p_test)
-
 }
 \references{
 Barber CB, Dobkin DP, Huhdanpaa H (1996) The Quickhull algorithm 
