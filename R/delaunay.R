@@ -1,9 +1,9 @@
 #' @title Delaunay triangulation
 #' 
 #' @description  This function calculates the 
-#' \href{https://en.wikipedia.org/wiki/Delaunay_triangulation}
-#' {Delaunay triangulation} of a set of \eqn{n} points in \eqn{d}-dimensional 
-#' space using the \href{http://www.qhull.org}{Qhull} library.
+#' \href{https://en.wikipedia.org/wiki/Delaunay_triangulation}{Delaunay triangulation} 
+#' of a set of \eqn{n} points in \eqn{d}-dimensional space using the 
+#' \href{http://www.qhull.org}{Qhull} library.
 #' 
 #' @param points a \eqn{n}-by-\eqn{d} dataframe or matrix. The rows
 #'   represent \eqn{n} points and the \eqn{d} columns the coordinates in 

@@ -8,8 +8,15 @@
 #' @param points a \eqn{n}-by-\eqn{d} dataframe or matrix. The rows
 #'   represent \eqn{n} points and the \eqn{d} columns the coordinates in 
 #'   \eqn{d}-dimensional space.
+#' @param delaunay a boolean indicating if the Delaunay triangulation, which is 
+#'   the dual of the Voronoi diagram should also be returned, defaults to 
+#'   \code{FALSE}.
 #' 
-#' @return Returns a list consisting of...
+#' @return Returns a list consisting of...  Additonally, if \code{delaunay = TRUE}...
+#' 
+#' 
+#' 
+#' @seealso \code{\link{delaunay}}
 #' 
 #' @references Barber CB, Dobkin DP, Huhdanpaa H (1996) The Quickhull algorithm 
 #' for convex hulls. ACM Transactions on Mathematical Software, 22(4):469-83 
@@ -35,7 +42,7 @@
 #' }
 #' 
 #' @export
-voronoi <- function(points=NULL) {
+voronoi <- function(points=NULL, delaunay=FALSE) {
 	
     # Check directory writable
     tmpdir <- tempdir()

@@ -10,7 +10,8 @@
 #'   \eqn{d}-dimensional space.
 #' @param alpha a real number between zero and infinity that defines the maximum 
 #'   circumradii for a simplex to be included in the alpha complex.  If 
-#'   unspecified \code{alpha} defaults to infinity.
+#'   unspecified \code{alpha} defaults to infinity and the alpha complex is 
+#'   equivalent to a Delaunay triangulation.
 #' 
 #' @return Returns a list consisting of: [1] a \eqn{s}-by-\eqn{d+1} matrix of 
 #' point indices that define the \eqn{s} 

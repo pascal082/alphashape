@@ -4,15 +4,19 @@
 \alias{voronoi}
 \title{Voronoi diagram}
 \usage{
-voronoi(points = NULL)
+voronoi(points = NULL, delaunay = FALSE)
 }
 \arguments{
 \item{points}{a \eqn{n}-by-\eqn{d} dataframe or matrix. The rows
 represent \eqn{n} points and the \eqn{d} columns the coordinates in 
 \eqn{d}-dimensional space.}
+
+\item{delaunay}{a boolean indicating if the Delaunay triangulation, which is 
+the dual of the Voronoi diagram should also be returned, defaults to 
+\code{FALSE}.}
 }
 \value{
-Returns a list consisting of...
+Returns a list consisting of...  Additonally, if \code{delaunay = TRUE}...
 }
 \description{
 This function calculates the 
@@ -44,4 +48,7 @@ for (vd_region in vd$voronoi_regions) {
 Barber CB, Dobkin DP, Huhdanpaa H (1996) The Quickhull algorithm 
 for convex hulls. ACM Transactions on Mathematical Software, 22(4):469-83 
 \url{https://doi.org/10.1145/235815.235821}.
+}
+\seealso{
+\code{\link{delaunay}}
 }
