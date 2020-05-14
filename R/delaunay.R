@@ -1,9 +1,9 @@
 #' @title Delaunay triangulation
 #' 
 #' @description  This function calculates the 
-#' \href{https://en.wikipedia.org/wiki/Delaunay_triangulation}{Delaunay triangulation} 
-#' of a set of \eqn{n} points in \eqn{d}-dimensional space using the
-#' \href{http://www.qhull.org}{Qhull} library.
+#' \href{https://en.wikipedia.org/wiki/Delaunay_triangulation}
+#' {Delaunay triangulation} of a set of \eqn{n} points in \eqn{d}-dimensional 
+#' space using the \href{http://www.qhull.org}{Qhull} library.
 #' 
 #' @param points a \eqn{n}-by-\eqn{d} dataframe or matrix. The rows
 #'   represent \eqn{n} points and the \eqn{d} columns the coordinates in 
@@ -77,16 +77,18 @@
     tri <- dt$tri + 1
     
     # Create list to return the desired Delaunay triangulation information
-    delaunay =list()
-    delaunay$simplices = tri
-    if (nrow(delaunay$simplices) == 1) {
-      # delaunay$areas <- NULL
-      delaunay$neighbours <- NULL
+    deltri =list()
+    deltri$simplices = tri
+    if (nrow(deltri$simplices) == 1) {
+      # deltri$areas <- NULL
+      deltri$simplex_neighs <- NULL
     }else{
-      # delaunay$areas <- dt$areas
-      delaunay$neighbours <- dt$neighbours
+      # deltri$areas <- dt$areas
+      for (s in seq(nrow(tri))) {
+        deltri$simplex_neighs[[s]] <- dt$neighbours[[s]][dt$neighbours[[s]] > 0]
+      }
     }
-    delaunay$input_points <- points
+    deltri$input_points <- points
 
-    return(delaunay)
+    return(deltri)
   }
