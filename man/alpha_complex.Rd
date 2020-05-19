@@ -17,7 +17,17 @@ unspecified \code{alpha} defaults to infinity and the alpha complex is
 equivalent to a Delaunay triangulation.}
 }
 \value{
-Returns a list consisting of: [1] a \eqn{s}-by-\eqn{d+1} matrix of 
+Returns a list consisting of: [input_points] the input points used to 
+create the alpha complex; [simplices] a \eqn{s}-by-\eqn{d+1} matrix 
+of point indices that define the \eqn{s} 
+\href{https://en.wikipedia.org/wiki/Simplex}{simplices} that make up the 
+alpha complex; [circumcentres] a \eqn{s}-by-\eqn{d} matrix of coordinates 
+that define the centre of the 
+\href{https://en.wikipedia.org/wiki/Circumscribed_circle}{circumcircle} 
+associated with each simples; and [circumradii] the radius of each 
+circumcircle.
+
+[1] a \eqn{s}-by-\eqn{d+1} matrix of 
 point indices that define the \eqn{s} 
 \href{https://en.wikipedia.org/wiki/Simplex}{simplices} that make up the
 alpha complex; [2] a \eqn{s}-by-\eqn{d} matrix of circumcentres for each 

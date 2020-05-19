@@ -13,7 +13,17 @@
 #'   unspecified \code{alpha} defaults to infinity and the alpha complex is 
 #'   equivalent to a Delaunay triangulation.
 #' 
-#' @return Returns a list consisting of: [1] a \eqn{s}-by-\eqn{d+1} matrix of 
+#' @return Returns a list consisting of: [input_points] the input points used to 
+#' create the alpha complex; [simplices] a \eqn{s}-by-\eqn{d+1} matrix 
+#' of point indices that define the \eqn{s} 
+#' \href{https://en.wikipedia.org/wiki/Simplex}{simplices} that make up the 
+#' alpha complex; [circumcentres] a \eqn{s}-by-\eqn{d} matrix of coordinates 
+#' that define the centre of the 
+#' \href{https://en.wikipedia.org/wiki/Circumscribed_circle}{circumcircle} 
+#' associated with each simples; and [circumradii] the radius of each 
+#' circumcircle.
+#' 
+#' [1] a \eqn{s}-by-\eqn{d+1} matrix of 
 #' point indices that define the \eqn{s} 
 #' \href{https://en.wikipedia.org/wiki/Simplex}{simplices} that make up the
 #' alpha complex; [2] a \eqn{s}-by-\eqn{d} matrix of circumcentres for each 
@@ -86,8 +96,8 @@ alpha_complex <- function(points=NULL, alpha=Inf) {
     
     # Create list to return the desired alpha complex information
     alpha_complex <- list()
+    alpha_complex$input_points <- points
     in_alpha_complex <- vd$circumRadii <= alpha
-    
     alpha_complex$simplices <- tri[in_alpha_complex, ]
     
     if (nrow(alpha_complex$simplices) < 1) {
@@ -97,7 +107,6 @@ alpha_complex <- function(points=NULL, alpha=Inf) {
 	    alpha_complex$circumcentres <- vd$voronoi_vertices[in_alpha_complex,]
 	    alpha_complex$circumradii <- vd$circumRadii[in_alpha_complex]
 	  }
-	  alpha_complex$input_points <- points
 
   	return(alpha_complex)
   }

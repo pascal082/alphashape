@@ -9,12 +9,11 @@
 #'   represent \eqn{n} points and the \eqn{d} columns the coordinates in 
 #'   \eqn{d}-dimensional space.
 #'   
-#' @return Returns a list consisting of: [1] a \eqn{s}-by-\eqn{d+1} matrix of 
-#' point indices that define the \eqn{s} 
-#' \href{https://en.wikipedia.org/wiki/Simplex}{simplices} that make up the
-#' Delaunay triangulation; [2] a list containing for each simplex the 
-#' neighbouring simplices; and [3] the input points used to create the Delaunay 
-#' triangulation.
+#' @return Returns a list consisting of: [input_points] the input points used to 
+#' create the Delaunay triangulation; [simplices] a \eqn{s}-by-\eqn{d+1} matrix 
+#' of point indices that define the \eqn{s} \href{https://en.wikipedia.org/wiki/Simplex}{simplices} 
+#' that make up the Delaunay triangulation; and [simplex_neighs] a list 
+#' containing for each simplex the neighbouring simplices.
 #' 
 #' @references Barber CB, Dobkin DP, Huhdanpaa H (1996) The Quickhull algorithm 
 #' for convex hulls. ACM Transactions on Mathematical Software, 22(4):469-83 
@@ -77,18 +76,16 @@
     tri <- dt$tri + 1
     
     # Create list to return the desired Delaunay triangulation information
-    deltri =list()
+    deltri <- list()
+    deltri$input_points <- points
     deltri$simplices = tri
     if (nrow(deltri$simplices) == 1) {
-      # deltri$areas <- NULL
       deltri$simplex_neighs <- NULL
-    }else{
-      # deltri$areas <- dt$areas
+    } else {
       for (s in seq(nrow(tri))) {
         deltri$simplex_neighs[[s]] <- dt$neighbours[[s]][dt$neighbours[[s]] > 0]
       }
     }
-    deltri$input_points <- points
 
     return(deltri)
   }

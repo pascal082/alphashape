@@ -12,9 +12,20 @@
 #'   the dual of the Voronoi diagram should also be returned, defaults to 
 #'   \code{FALSE}.
 #' 
-#' @return Returns a list consisting of...  Additonally, if \code{delaunay = TRUE}...
-#' 
-#' 
+#' @return Returns a list consisting of: [input_points] the input points used to 
+#' create the Voronoi diagram; [voronoi_vertices] a \eqn{i}-by-\eqn{d} matrix of 
+#' point coordinates that define the vertcies that make each Voronoi region 
+#' \eqn{v}; and [voronoi_regions] a list of length \eqn{p} that for each input point 
+#' contains indicies for the Voronoi vertices that define the Voronoi region 
+#' \eqn{v} for each input point - if the indicies include zeros then the Voronoi 
+#' region is infinite.  Additonally, if \code{delaunay = TRUE} the returned list 
+#' also inclues: [simplices] a \eqn{s}-by-\eqn{d+1} matrix of point indices that 
+#' define the \eqn{s} \href{https://en.wikipedia.org/wiki/Simplex}{simplices} 
+#' that make up the Delaunay triangulation; [circumradii] for each simplex the 
+#' radius of the associated 
+#' \href{https://en.wikipedia.org/wiki/Circumscribed_circle}{circumcircle}; and 
+#' [simplex_neighs] a list containing for each simplex the neighbouring 
+#' simplices.
 #' 
 #' @seealso \code{\link{delaunay}}
 #' 
@@ -33,6 +44,8 @@
 #'          "brown", "darkgreen", "orange")
 #' plot(vd$input_points, pch = as.character(seq(nrow(p))), col=cols,
 #'      xlim=c(0,100), ylim=c(0,100))
+#' text(vd$voronoi_vertices[,1], vd$voronoi_vertices[,2], 
+#'      labels = as.character(seq(nrow(vd$voronoi_vertices))))
 #' r = 0
 #' for (vd_region in vd$voronoi_regions) {
 #'   r = r + 1
@@ -87,20 +100,25 @@ voronoi <- function(points=NULL, delaunay=FALSE) {
     point_regions_data = point_regions[unlist(point_regions != -1)]
     voronoi_regions_data = voronoi_regions[unlist(point_regions != -1)]
     voronoi_regions_ordered = voronoi_regions_data[order(point_regions_data)]
-      
+    # Determine Vonoi neighbours via Delaunay triangulation
+    tri_sorted <- t(apply(tri, 1, sort))
+    all_edges <- rbind(tri_sorted[,1:2], tri_sorted[,2:3], tri_sorted[,c(1,3)])
+    edges_ID <- paste(all_edges[,1], all_edges[,2], sep="_")
+    voronoi_neighs <- all_edges[!duplicated(edges_ID),]      
+    
     # Create list to return the desired Voronoi diagram information
     voronoi <- list()
-    voronoi$simplices <- tri
-	  if (nrow(voronoi$simplices) == 1) {	
-	    voronoi$neighbours <- NULL
-	    voronoi$voronoi_vertices <- NULL
-	    voronoi$voronoi_regions <- NULL
-	  } else {
-	    voronoi$neighbours <- vd$neighbours
-	    voronoi$voronoi_vertices <- vd$voronoi_vertices
-	    voronoi$voronoi_regions <- voronoi_regions_ordered
-	  }
-	  voronoi$input_points <- points
+    voronoi$input_points <- points
+    voronoi$voronoi_vertices <- vd$voronoi_vertices
+    voronoi$voronoi_regions <- voronoi_regions_ordered    
 
+    # Return Delaunay triangulation information too if wanted
+    if (delaunay == TRUE) {
+	    voronoi$simplices <- tri
+	    voronoi$circumradii <- vd$circumRadii
+      for (s in seq(nrow(tri))) {
+          voronoi$simplex_neighs[[s]] <- dt$neighbours[[s]][dt$neighbours[[s]] > 0]
+      }
+	  }
   	return(voronoi)
   }

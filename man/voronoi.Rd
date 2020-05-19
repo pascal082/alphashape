@@ -16,7 +16,20 @@ the dual of the Voronoi diagram should also be returned, defaults to
 \code{FALSE}.}
 }
 \value{
-Returns a list consisting of...  Additonally, if \code{delaunay = TRUE}...
+Returns a list consisting of: [input_points] the input points used to 
+create the Voronoi diagram; [voronoi_vertices] a \eqn{i}-by-\eqn{d} matrix of 
+point coordinates that define the vertcies that make each Voronoi region 
+\eqn{v}; and [voronoi_regions] a list of length \eqn{p} that for each input point 
+contains indicies for the Voronoi vertices that define the Voronoi region 
+\eqn{v} for each input point - if the indicies include zeros then the Voronoi 
+region is infinite.  Additonally, if \code{delaunay = TRUE} the returned list 
+also inclues: [simplices] a \eqn{s}-by-\eqn{d+1} matrix of point indices that 
+define the \eqn{s} \href{https://en.wikipedia.org/wiki/Simplex}{simplices} 
+that make up the Delaunay triangulation; [circumradii] for each simplex the 
+radius of the associated 
+\href{https://en.wikipedia.org/wiki/Circumscribed_circle}{circumcircle}; and 
+[simplex_neighs] a list containing for each simplex the neighbouring 
+simplices.
 }
 \description{
 This function calculates the 
@@ -35,6 +48,8 @@ cols = c("red", "blue", "green", "darkgrey", "purple", "lightseagreen",
          "brown", "darkgreen", "orange")
 plot(vd$input_points, pch = as.character(seq(nrow(p))), col=cols,
      xlim=c(0,100), ylim=c(0,100))
+text(vd$voronoi_vertices[,1], vd$voronoi_vertices[,2], 
+     labels = as.character(seq(nrow(vd$voronoi_vertices))))
 r = 0
 for (vd_region in vd$voronoi_regions) {
   r = r + 1
