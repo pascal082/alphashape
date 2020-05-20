@@ -29,7 +29,7 @@ x <- c(30, 70, 20, 50, 40, 70)
 y <- c(35, 80, 70, 50, 60, 20)
 p <- data.frame(x, y)
 ch <- convex_hull(points = p)
-plot(p, pch = as.character(seq(nrow(p))))
+plot(p, pch = as.character(seq(nrow(p))), xlim=c(0,100), ylim=c(0,100))
 for (e in seq(nrow(ch$hull_edges))) {
   lines(ch$input_points[ch$hull_edges[e, ], ], col = "red")
 }
