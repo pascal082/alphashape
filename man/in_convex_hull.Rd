@@ -29,9 +29,18 @@ x <- c(30, 70, 20, 50, 40, 70)
 y <- c(35, 80, 70, 50, 60, 20)
 p <- data.frame(x, y)
 ch <- convex_hull(points = p)
+plot(p, pch = as.character(seq(nrow(p))))
+for (e in seq(nrow(ch$hull_edges))) {
+  lines(ch$input_points[ch$hull_edges[e, ], ], col = "red")
+}
 # Check if some test points are in the convex hull
 p_test <- data.frame(c(20, 50, 60), c(20, 50, 60))
-checks <- in_convex_hull(hull = ch, test_points = p_test)
+points(p_test[,1], p_test[,2], pch=c("1", "2", "3", "4"), col="blue")
+legend("topright", legend = c("input points", "test points"), 
+       text.col=c("black", "blue"), title = "Indicies for:", bty="n")
+p_test_hull <- in_convex_hull(hull = ch, test_points = p_test)
+print(p_test_hull)
+
 }
 \references{
 Barber CB, Dobkin DP, Huhdanpaa H (1996) The Quickhull algorithm 
