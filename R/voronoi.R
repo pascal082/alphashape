@@ -26,6 +26,30 @@
 #' \href{https://en.wikipedia.org/wiki/Circumscribed_circle}{circumcircle}; and 
 #' [simplex_neighs] a list containing for each simplex the neighbouring 
 #' simplices.
+#' \itemize{
+#'   \item \code{input_points}: the input points used to create the Voronoi 
+#'   diagram.
+#'   \item \code{voronoi_vertices}: a \eqn{i}-by-\eqn{d} matrix of point 
+#'   coordinates that define the vertcies that make each Voronoi region \eqn{v}.
+#'   \item \code{voronoi_regions}: a list of length \eqn{p} that for each input 
+#'   point contains indicies for the Voronoi vertices that define the Voronoi 
+#'   region \eqn{v} for each input point - if the indicies include zeros then 
+#'   the Voronoi region is infinite.
+#' }
+#' 
+#' Additionally, if \code{delaunay = TRUE} the returned list also inclues:
+#' 
+#' \itemize{
+#'   \item \code{simplices}: a \eqn{s}-by-\eqn{d+1} matrix of point indices 
+#'   that define the \eqn{s} \href{https://en.wikipedia.org/wiki/Simplex}{simplices} 
+#'   that make up the Delaunay triangulation.
+#'   \item \code{circumradii}: for each simplex the radius of the associated 
+#'   \href{https://en.wikipedia.org/wiki/Circumscribed_circle}{circumcircle} 
+#'   (note: the \code{voronoi_vertices} are equivalent to the the centre of the 
+#'   circumcircle).
+#'   \item \code{simplex_neighs}: a list containing for each simplex the 
+#'   neighbouring simplices.
+#' }
 #' 
 #' @seealso \code{\link{delaunay}}
 #' 
@@ -117,7 +141,7 @@ voronoi <- function(points=NULL, delaunay=FALSE) {
 	    voronoi$simplices <- tri
 	    voronoi$circumradii <- vd$circumRadii
       for (s in seq(nrow(tri))) {
-          voronoi$simplex_neighs[[s]] <- dt$neighbours[[s]][dt$neighbours[[s]] > 0]
+          voronoi$simplex_neighs[[s]] <- vd$neighbours[[s]][vd$neighbours[[s]] > 0]
       }
 	  }
   	return(voronoi)
