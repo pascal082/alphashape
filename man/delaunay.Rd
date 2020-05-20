@@ -12,11 +12,17 @@ represent \eqn{n} points and the \eqn{d} columns the coordinates in
 \eqn{d}-dimensional space.}
 }
 \value{
-Returns a list consisting of: [input_points] the input points used to 
-create the Delaunay triangulation; [simplices] a \eqn{s}-by-\eqn{d+1} matrix 
-of point indices that define the \eqn{s} \href{https://en.wikipedia.org/wiki/Simplex}{simplices} 
-that make up the Delaunay triangulation; and [simplex_neighs] a list 
-containing for each simplex the neighbouring simplices.
+Returns a list consisting of:
+
+\itemize{
+  \item \code{input_points}: the input points used to create the Delaunay 
+  triangulation .
+  \item \code{simplices}: a \eqn{s}-by-\eqn{d+1} matrix of point indices 
+  that define the \eqn{s} \href{https://en.wikipedia.org/wiki/Simplex}{simplices} 
+  that make up the Delaunay triangulation.
+  \item \code{simplex_neighs}: a list containing for each simplex the 
+  neighbouring simplices.
+}
 }
 \description{
 This function calculates the 

@@ -17,22 +17,20 @@ unspecified \code{alpha} defaults to infinity and the alpha complex is
 equivalent to a Delaunay triangulation.}
 }
 \value{
-Returns a list consisting of: [input_points] the input points used to 
-create the alpha complex; [simplices] a \eqn{s}-by-\eqn{d+1} matrix 
-of point indices that define the \eqn{s} 
-\href{https://en.wikipedia.org/wiki/Simplex}{simplices} that make up the 
-alpha complex; [circumcentres] a \eqn{s}-by-\eqn{d} matrix of coordinates 
-that define the centre of the 
-\href{https://en.wikipedia.org/wiki/Circumscribed_circle}{circumcircle} 
-associated with each simples; and [circumradii] the radius of each 
-circumcircle.
+Returns a list consisting of:
 
-[1] a \eqn{s}-by-\eqn{d+1} matrix of 
-point indices that define the \eqn{s} 
-\href{https://en.wikipedia.org/wiki/Simplex}{simplices} that make up the
-alpha complex; [2] a \eqn{s}-by-\eqn{d} matrix of circumcentres for each 
-simplex ; [3] a list of \eqn{s} circumradii for each simplex; and [4] the 
-input points used to create the alpha complex.
+\itemize{
+  \item \code{input_points}: the input points used to create the Voronoi 
+  diagram.
+  \item \code{simplices}: a \eqn{s}-by-\eqn{d+1} matrix of point indices 
+  that define the \eqn{s} \href{https://en.wikipedia.org/wiki/Simplex}{simplices} 
+  that make up the alpha complex.
+  \item \code{circumcentres}: a \eqn{s}-by-\eqn{d} matrix of coordinates 
+  that define the centre of the 
+  \href{https://en.wikipedia.org/wiki/Circumscribed_circle}{circumcircle} 
+  associated with each simplex.
+  \item \code{circumradii}: the radius of each circumcircle.
+}
 }
 \description{
 This function calculates the 

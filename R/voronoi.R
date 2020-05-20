@@ -12,20 +12,8 @@
 #'   the dual of the Voronoi diagram should also be returned, defaults to 
 #'   \code{FALSE}.
 #' 
-#' @return Returns a list consisting of: [input_points] the input points used to 
-#' create the Voronoi diagram; [voronoi_vertices] a \eqn{i}-by-\eqn{d} matrix of 
-#' point coordinates that define the vertcies that make each Voronoi region 
-#' \eqn{v}; and [voronoi_regions] a list of length \eqn{p} that for each input point 
-#' contains indicies for the Voronoi vertices that define the Voronoi region 
-#' \eqn{v} for each input point - if the indicies include zeros then the Voronoi 
-#' region is infinite.  Additonally, if \code{delaunay = TRUE} the returned list 
-#' also inclues: [simplices] a \eqn{s}-by-\eqn{d+1} matrix of point indices that 
-#' define the \eqn{s} \href{https://en.wikipedia.org/wiki/Simplex}{simplices} 
-#' that make up the Delaunay triangulation; [circumradii] for each simplex the 
-#' radius of the associated 
-#' \href{https://en.wikipedia.org/wiki/Circumscribed_circle}{circumcircle}; and 
-#' [simplex_neighs] a list containing for each simplex the neighbouring 
-#' simplices.
+#' @return Returns a list consisting of:
+#' 
 #' \itemize{
 #'   \item \code{input_points}: the input points used to create the Voronoi 
 #'   diagram.
@@ -45,8 +33,8 @@
 #'   that make up the Delaunay triangulation.
 #'   \item \code{circumradii}: for each simplex the radius of the associated 
 #'   \href{https://en.wikipedia.org/wiki/Circumscribed_circle}{circumcircle} 
-#'   (note: the \code{voronoi_vertices} are equivalent to the the centre of the 
-#'   circumcircle).
+#'   (note: the \code{voronoi_vertices} are equivalent to the the centres of the 
+#'   circumcircles).
 #'   \item \code{simplex_neighs}: a list containing for each simplex the 
 #'   neighbouring simplices.
 #' }
