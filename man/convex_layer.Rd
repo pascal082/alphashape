@@ -45,7 +45,9 @@ plot(p)
 cols <- c("red", "blue", "orange", "lightseagreen", "purple")
 for (i in seq(5)) {
   cl <- convex_layer(points = p, layer = i)
-  polygon(cl$hull_verticies, border = cols[i], lwd = 2)
+  for (s in seq(nrow(cl$hull_simplices))) {
+    lines(cl$input_points[cl$hull_simplices[s, ], ], col = cols[i], lwd = 2)
+  }
 }
 legend("topright", legend = seq(5), lwd = 2, col = cols, bty = "n",
        title = "Convex layers")

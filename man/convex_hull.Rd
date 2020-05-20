@@ -39,7 +39,9 @@ p <- data.frame(x, y)
 # Create convex hull and plot
 ch <- convex_hull(points=p)
 plot(p, pch = as.character(seq(nrow(p))))
-polygon(ch$hull_verticies, border = "red")
+for (s in seq(nrow(ch$hull_simplices))) {
+  lines(ch$input_points[ch$hull_simplices[s, ], ], col = "red")
+}
 
 }
 \references{
