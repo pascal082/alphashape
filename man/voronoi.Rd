@@ -22,7 +22,7 @@ Returns a list consisting of:
   \item \code{input_points}: the input points used to create the Voronoi 
   diagram.
   \item \code{voronoi_vertices}: a \eqn{i}-by-\eqn{d} matrix of point 
-  coordinates that define the vertcies that make each Voronoi region \eqn{v}.
+  coordinates that define the verticies that make each Voronoi region \eqn{v}.
   \item \code{voronoi_regions}: a list of length \eqn{p} that for each input 
   point contains indicies for the Voronoi vertices that define the Voronoi 
   region \eqn{v} for each input point - if the indicies include zeros then 

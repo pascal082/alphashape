@@ -9,12 +9,19 @@
 #'   represent \eqn{n} points and the \eqn{d} columns the coordinates in 
 #'   \eqn{d}-dimensional space.
 #'   
-#' @return Returns a list consisting of: [1] a matrix for which each row is the 
-#' pair of point indices that define the egde of the convex hull; [2] a vector 
-#' of the point indicies that form the convex hull; [3] a matrix of point 
-#' coordinates that form the convex hull; and [4] the input points used to 
-#' create the convex hull.
-#'
+#' @return Returns a list consisting of:
+#' 
+#' \itemize{
+#'   \item \code{input_points}: the input points used to create the convex hull.
+#'   \item \code{hull_simplices}: a \eqn{s}-by-\eqn{d} matrix of point indices 
+#'   that define the \eqn{s} \href{https://en.wikipedia.org/wiki/Simplex}{simplices} 
+#'   that make up the convex hull.
+#'   \item \code{hull_indicies}: a vector of the point indicies that form the 
+#'   convex hull.
+#'   \item \code{hull_verticies}: a matrix of point coordinates that form the 
+#'   convex hull.
+#' }
+#' 
 #' @seealso \code{\link{convex_layer}}
 #' 
 #' @references Barber CB, Dobkin DP, Huhdanpaa H (1996) The Quickhull algorithm 
@@ -29,9 +36,7 @@
 #' # Create convex hull and plot
 #' ch <- convex_hull(points=p)
 #' plot(p, pch = as.character(seq(nrow(p))))
-#' for (e in seq(nrow(ch$hull_edges))) {
-#'   lines(ch$input_points[ch$hull_edges[e, ], ], col = "red")
-#' }
+#' polygon(ch$hull_verticies, border = "red")
 #' 
 #' @export
   convex_hull <- function(points=NULL) {
@@ -67,14 +72,14 @@
   	ch <- .Call("C_convex", points, options, tmpdir, PACKAGE="alphashape")
   	# Re-index from C numbering to R numbering
   	ch$convex_hull[is.na(ch$convex_hull)] <- 0
-  	edges <- as.data.frame(ch$convex_hull + 1)
+  	simplices <- as.data.frame(ch$convex_hull + 1)
   	
   	# Create list to return the desired convex hull information
   	convex <- list()
-  	convex$hull_edges <- as.matrix(edges)
-  	convex$hull_indices <- unique(c(as.integer(ch$convex_hull + 1)))
-  	convex$hull_points <- points[convex$hull_indices,]
   	convex$input_points <- points
+  	convex$hull_simplices <- as.matrix(simplices)
+  	convex$hull_indices <- unique(c(as.integer(ch$convex_hull + 1)))
+  	convex$hull_verticies <- points[convex$hull_indices,]
   
   	return(convex)
   }

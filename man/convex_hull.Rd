@@ -12,11 +12,18 @@ represent \eqn{n} points and the \eqn{d} columns the coordinates in
 \eqn{d}-dimensional space.}
 }
 \value{
-Returns a list consisting of: [1] a matrix for which each row is the 
-pair of point indices that define the egde of the convex hull; [2] a vector 
-of the point indicies that form the convex hull; [3] a matrix of point 
-coordinates that form the convex hull; and [4] the input points used to 
-create the convex hull.
+Returns a list consisting of:
+
+\itemize{
+  \item \code{input_points}: the input points used to create the convex hull.
+  \item \code{hull_simplices}: a \eqn{s}-by-\eqn{d} matrix of point indices 
+  that define the \eqn{s} \href{https://en.wikipedia.org/wiki/Simplex}{simplices} 
+  that make up the convex hull.
+  \item \code{hull_indicies}: a vector of the point indicies that form the 
+  convex hull.
+  \item \code{hull_verticies}: a matrix of point coordinates that form the 
+  convex hull.
+}
 }
 \description{
 This function calculates the 
@@ -32,9 +39,7 @@ p <- data.frame(x, y)
 # Create convex hull and plot
 ch <- convex_hull(points=p)
 plot(p, pch = as.character(seq(nrow(p))))
-for (e in seq(nrow(ch$hull_edges))) {
-  lines(ch$input_points[ch$hull_edges[e, ], ], col = "red")
-}
+polygon(ch$hull_verticies, border = "red")
 
 }
 \references{

@@ -16,11 +16,18 @@ unspecified convex layer 1 is returned that is equivalent to the convex
 hull.}
 }
 \value{
-Returns a list consisting of: [1] a matrix for which each row is the 
-pair of point indices that define the egde of the convex layer; [2] a vector 
-of the point indicies that form the convex layer; [3] a matrix of point 
-coordinates that form the convex layer; and [4] the input points used to 
-create the convex layer.
+Returns a list consisting of:
+
+\itemize{
+  \item \code{input_points}: the input points used to create the convex layer.
+  \item \code{hull_simplices}: a \eqn{s}-by-\eqn{d} matrix of point indices 
+  that define the \eqn{s} \href{https://en.wikipedia.org/wiki/Simplex}{simplices} 
+  that make up the convex layer.
+  \item \code{hull_indicies}: a vector of the point indicies that form the 
+  convex layer.
+  \item \code{hull_verticies}: a matrix of point coordinates that form the 
+  convex layer.
+}
 }
 \description{
 This function calculates a 
@@ -38,9 +45,7 @@ plot(p)
 cols <- c("red", "blue", "orange", "lightseagreen", "purple")
 for (i in seq(5)) {
   cl <- convex_layer(points = p, layer = i)
-  for (e in seq(nrow(cl$hull_edges))) {
-    lines(cl$input_points[cl$hull_edges[e, ], ], col = cols[i], lwd = 2)
-  }
+  polygon(cl$hull_verticies, border = cols[i], lwd = 2)
 }
 legend("topright", legend = seq(5), lwd = 2, col = cols, bty = "n",
        title = "Convex layers")
