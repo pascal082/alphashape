@@ -30,7 +30,7 @@
 #'   lines(ch$input_points[ch$hull_edges[e, ], ], col = "red")
 #' }
 #' # Check if some test points are in the convex hull
-#' p_test <- data.frame(c(20, 50, 60), c(20, 50, 60))
+#' p_test <- data.frame(c(20, 50, 60, 90), c(20, 60, 60, 40))
 #' points(p_test[,1], p_test[,2], pch=c("1", "2", "3", "4"), col="blue")
 #' legend("topright", legend = c("input points", "test points"), 
 #'        text.col=c("black", "blue"), title = "Indicies for:", bty="n")
