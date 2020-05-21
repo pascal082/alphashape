@@ -1,4 +1,4 @@
 library(testthat)
-library(alphashape)
+library(compGeometeR)
 
-test_check("alphashape")
+test_check("compGeometeR")

@@ -1,4 +1,4 @@
-context("delaunay")
+context("compGeometeR")
 
 test_that("delaunayn should return an error when the the input has NAs", {
 

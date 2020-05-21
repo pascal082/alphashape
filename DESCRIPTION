@@ -1,15 +1,14 @@
-Package: alphashape
+Package: compGeometeR
 Type: Package
-Title: Create Delaunay triangulations, Voronoi vertices and alpha shape for n number of dimension using the QHULL library
-Version: 1.2
-Date: 2019-03-15
+Title: Create Computational Geometry Algorithms for use in R
+Version: 1.0
+Date: 2020-05-15
 Authors@R: c(
-    person("Pascal", "Omondiagbe" , role=c("aut","cre"), email="omondiagbep@landcareresearch.co.nz",comment = ""),
+    person("O. Pascal", "Omondiagbe" , role=c("aut","cre"), email="omondiagbep@landcareresearch.co.nz"),
     person("Tom", "Etherington", role=c("aut"), email="etheringtonT@landcareresearch.co.nz"))
-Maintainer: Pascal Omondiagbe <omondiagbep@landcareresearch.co.nz>
-Description: Makes an Alpha shape for any number of N dimension using the Delaunay triangulations generated using via the Qhull library (www.qhull.org)
-    This package has been tested to work up to 5 number of dimension. 
-License: MIT + file LICENSE
+Maintainer: O. Pascal Omondiagbe <omondiagbep@landcareresearch.co.nz>
+Description: Create Computational Geometry Algorithms for use in R 
+License: GPU
 Depends: R (>= 3.5.1)
 Imports: 
    devtools
@@ -19,4 +18,4 @@ RoxygenNote: 7.1.0
 Suggests: 
    testthat
 NeedsCompilation: no
-Packaged: 2019-02-27 22:10:32 UTC; Pas
+Packaged: 2020-05-20 22:10:32 UTC; Pas

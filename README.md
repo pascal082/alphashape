@@ -1,9 +1,9 @@
-# qhull-nalphashape-package 
+# compGeometeR-package 
 
 ##(More detail documentation to be added here)
 
-This is the initial version for the alpha shape R package which will be use for the species distribution modelling project. It uses the Qhull library (http://www.qhull.org/) 
-to generate a delaunay triangultion and get the voronoi vertices from a set of points (works for 2 to any number of dimensions of points)
+This is the initial version for the implementation of computation geometery algorithem to be use in R. It exposes some of the algorithms in the  Qhull library (http://www.qhull.org/) and implement additional algorithm using the output derived from some of the Qhull algorithms. 
+
 
 
 
@@ -45,7 +45,7 @@ To start local development please branch out from the current stable master bran
 After making changes,  build and install to your R library by running the following command in the package root directory:
 
 + make install
-+  R CMD Rd2pdf --title='Alpha shape' -o /d/Projects/SDMRPackages/qhull-nalphashape-package/alphashape_doc.pdf package/man/*.Rd (to regenerate the pdf file)
++  R CMD Rd2pdf --title='compGeometeR' -o /d/Projects/SDMRPackages/compGeometeR_doc.pdf package/man/*.Rd (to regenerate the pdf file)
 devtools::install(args = c("--no-multiarch"))
 
 
@@ -57,9 +57,9 @@ There are two ways to install the stable development version.
 
 download the version from the repo package folder (""release_package""), and run the following command
 
-remove.packages("nalphashape", lib="C:/Program Files/R/R-3.5.1/library")
-detach("alphashape",unload=TRUE)
-install.packages("D:/Projects/SDMRPackages/qhull-nalphashape-package/installation_package/alphashape_1.0.0.zip", repos=NULL, type="binary")
+remove.packages("compGeometeR", lib="C:/Program Files/R/R-3.5.1/library")
+detach("compGeometeR",unload=TRUE)
+install.packages("D:/Projects/SDMRPackages/compGeometeR_1.0.0.zip", repos=NULL, type="binary")
 
 
 

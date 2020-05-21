@@ -91,7 +91,7 @@ double * calculateradill(double *point0,double *voronoiVertices)
 }
 
 /* find if a given point in the grid is an alpha-complex simplex */
-SEXP C_alphaShape(const SEXP gridSpaceSimplex,const SEXP circumRadii, const SEXP alpha)
+SEXP C_compGeomete(const SEXP gridSpaceSimplex,const SEXP circumRadii, const SEXP alpha)
 {
 
 	  double *gridPoint,*circumRadiiPoint;
