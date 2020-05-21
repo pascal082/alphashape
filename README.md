@@ -1,6 +1,6 @@
-# compGeometeR-package 
+# compGeometeR  R package 
 
-##(More detail documentation to be added here)
+### (More detail documentation to be added here)
 
 This is the initial version for the implementation of computation geometery algorithem to be use in R. It exposes some of the algorithms in the  Qhull library (http://www.qhull.org/) and implement additional algorithm using the output derived from some of the Qhull algorithms. 
 
@@ -15,7 +15,7 @@ To start local development please branch out from the current stable master bran
 + git checkout development
 
 
-###Software needed to get started
+### Software needed to get started
 
 1. Download perl(https://www.activestate.com/products/activeperl/downloads/)
 
@@ -49,7 +49,7 @@ After making changes,  build and install to your R library by running the follow
 devtools::install(args = c("--no-multiarch"))
 
 
-##Installing Stable Development version from the repo
+## Installing Stable Development version from the repo
 
 There are two ways to install the stable development version.
 
@@ -76,7 +76,7 @@ devtools::install_git("https://bitbucket.org/landcareresearch/qhull-nalphashape-
     
     
 
-##Maintainer
+## Maintainer
 Pascal Omondiagbe <omondiagbep@landcareresearch.co.nz>
 
 
